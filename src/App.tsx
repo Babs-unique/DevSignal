@@ -1,11 +1,11 @@
 import './App.css'
+import { HomePage } from './HomePage'
 
 function App() {
 
   return (
     <>
-      <section id="center"></section>
-      <section id="spacer"></section>
+      <HomePage/>
     </>
   )
 }
