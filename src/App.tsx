@@ -1,11 +1,12 @@
+import { RouterProvider } from 'react-router/dom'
 import './App.css'
-import { HomePage } from './HomePage'
+import {router} from './routes.tsx'
 
 function App() {
 
   return (
     <>
-      <HomePage/>
+      <RouterProvider router={router} />
     </>
   )
 }
