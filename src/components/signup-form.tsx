@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Code2 } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export function SignupForm({
   className,
@@ -91,9 +92,9 @@ export function SignupForm({
         {/* Sign In Link */}
         <div className="text-center text-sm text-gray-400">
           Already have an account?{" "}
-          <a href="/login" className="text-purple-400 hover:text-purple-300 underline">
+        <Link to="/login" className="text-purple-400 hover:text-purple-300 underline">
             Log in
-          </a>
+          </Link>
         </div>
       </div>
 

@@ -18,7 +18,7 @@ export function LoginForm({
               <Code2 className="h-5 w-5 text-white" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-white">Create an account</h1>
+          <h1 className="text-2xl font-bold text-white">Welcome back</h1>
           <p className="text-sm text-gray-400">Sign-in to continue to DevSignal</p>
         </div>
 
@@ -36,7 +36,10 @@ export function LoginForm({
 
           {/* Password */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm text-gray-300">Password</label>
+            <div className="flex justify-between">
+              <label className="text-sm text-gray-300">Password</label>
+              <Link to='/reset' className="text-xs text-blue-700 self-end">Forgot password?</Link>
+            </div>
             <Input
               type="password"
               placeholder="••••••••"
@@ -81,7 +84,7 @@ export function LoginForm({
       </div>
 
       {/* Terms */}
-      <div className="flex text-center align-middle gap-1 w-full">
+      <div className="flex text-center align-middle gap-1 w-full justify-center">
       <p className=" text-xs text-gray-500">
         Don't have an account?
       </p>
