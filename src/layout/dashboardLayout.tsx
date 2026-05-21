@@ -28,9 +28,9 @@ export const DashboardLayout = () => {
     { name: 'History', icon: <History />, path: 'history' }
     ]
   return (
-    <div className='md:flex h-screen bg-[#000] text-white'>
+    <div className='md:flex h-screen bg-[#000] text-white overflow-hidden'>
         <MobileNavbar openLogoutButton={openLogoutButton} handleLogout={handleLogout} isLogoutOpen={isLogoutOpen} />
-        <aside className='w-64 h-screen border-r border-gray-900 md:flex md:flex-col md:justify-between text-white bg-gray-950 hidden'>
+        <aside className='w-64 h-screen border-r border-gray-950 md:flex md:flex-col md:justify-between text-white bg-[#0303069a]  hidden'>
             <div className='flex flex-col gap-4'>
                <div className="flex justify-left items-center align-middle border-b border-gray-900 p-4 gap-4">
                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-linear-to-br from-purple-500 to-purple-600">
@@ -85,7 +85,7 @@ export const DashboardLayout = () => {
                 </div>
                     </div>
                 </aside>
-                <main className='p-4 flex-1'>
+                <main className='p-4 flex-1 overflow-y-scroll h-full'>
                     <Outlet />
                 </main>     
             </div>

@@ -10,7 +10,13 @@ import { Menu,
     } from "lucide-react";
 import {Link } from 'react-router-dom'
 
-export const  MobileNavbar = ({ openLogoutButton, handleLogout, isLogoutOpen }) => {
+interface ButtonProps {
+    openLogoutButton: () => void;
+    handleLogout: () => void;
+    isLogoutOpen: boolean;
+} 
+
+export const  MobileNavbar = ({ openLogoutButton, handleLogout, isLogoutOpen }: ButtonProps ) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
       const menuItems = [
       { name: 'Dashboard', icon: <ChartLine />, path: '' },
