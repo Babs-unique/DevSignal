@@ -55,7 +55,7 @@ const analysis = [
 export const Stats = () => {
   return (
     <section className="grid gap-6 xl:grid-cols-[minmax(300px,357px)_1fr]">
-      <article className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6 shadow-[0_0_60px_rgba(124,58,237,0.08)]">
+      <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6 shadow-[0_0_60px_rgba(124,58,237,0.08)]">
         <div className="mb-7 flex items-center justify-between gap-4">
           <p className="text-xs font-medium uppercase tracking-[0.24em] text-gray-400">
             Overall Match Score
@@ -83,9 +83,9 @@ export const Stats = () => {
         <p className="mx-auto mt-7 max-w-[250px] text-center text-sm leading-6 text-gray-400">
           Based on your latest resume vs. Senior Frontend Developer role.
         </p>
-      </article>
+      </div>
 
-      <article className="grid gap-6 rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6 lg:grid-cols-[1fr_1px_0.95fr]">
+      <div className="grid gap-6 rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6 lg:grid-cols-[1fr_1px_0.95fr]">
         <div className="flex min-h-[252px] flex-col">
           <p className="mb-5 text-xs font-medium uppercase tracking-[0.24em] text-gray-400">
             Top Missing Skills
@@ -140,7 +140,7 @@ export const Stats = () => {
             ))}
           </div>
         </div>
-      </article>
+      </div>
     </section>
   )
 }

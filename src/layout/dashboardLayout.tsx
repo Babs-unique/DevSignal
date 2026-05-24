@@ -32,12 +32,12 @@ export const DashboardLayout = () => {
         <MobileNavbar openLogoutButton={openLogoutButton} handleLogout={handleLogout} isLogoutOpen={isLogoutOpen} />
         <aside className='w-64 h-screen border-r border-gray-950 md:flex md:flex-col md:justify-between text-white bg-[#0303069a]  hidden'>
             <div className='flex flex-col gap-4'>
-               <div className="flex justify-left items-center align-middle border-b border-gray-900 p-4 gap-4">
+               <Link to='/dashboard' className="flex justify-left items-center align-middle border-b border-gray-900 p-4 gap-4 cursor-pointer">
                          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-linear-to-br from-purple-500 to-purple-600">
                            <Code2 className="h-5 w-5 text-white" />
                          </div>
                          <p className="text-lg font-bold text-center">DevSignal</p>
-                       </div>
+                       </Link>
             <nav className='flex flex-col gap-6 p-4'>
                 {
                     menuItems.map((item) => {

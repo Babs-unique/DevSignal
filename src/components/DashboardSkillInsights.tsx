@@ -45,7 +45,7 @@ const nextSteps = [
 export const DashboardSkillInsights = () => {
   return (
     <section className="grid gap-6 xl:grid-cols-[1fr_357px]">
-      <article className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
+      <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
         <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs font-medium uppercase tracking-[0.24em] text-gray-400">
             Skill Distribution Radar
@@ -96,9 +96,9 @@ export const DashboardSkillInsights = () => {
             </RadarChart>
           </ResponsiveContainer>
         </div>
-      </article>
+      </div>
 
-      <article className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
+      <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
         <p className="mb-7 text-xs font-medium uppercase tracking-[0.24em] text-gray-400">
           Actionable Next Steps
         </p>
@@ -129,7 +129,7 @@ export const DashboardSkillInsights = () => {
             )
           })}
         </div>
-      </article>
+      </div>
     </section>
   )
 }

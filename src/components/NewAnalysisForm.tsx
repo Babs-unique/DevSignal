@@ -2,7 +2,11 @@ import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { CloudUpload, FileText, Shield, WandSparkles } from 'lucide-react'
 
-export const NewAnalysisForm = () => {
+type NewAnalysisFormProps = {
+  onStartAnalysis?: () => void
+}
+
+export const NewAnalysisForm = ({ onStartAnalysis }: NewAnalysisFormProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [jobDescription, setJobDescription] = useState('')
 
@@ -170,7 +174,11 @@ Requirements:
           <button className="rounded-lg border border-white/10 px-6 py-3 text-sm font-medium text-gray-200 transition hover:bg-white/5">
             Cancel
           </button>
-          <button className="flex items-center gap-2 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 px-7 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(124,58,237,0.35)] transition hover:from-indigo-400 hover:to-purple-500">
+          <button
+            type="button"
+            onClick={onStartAnalysis}
+            className="flex items-center gap-2 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 px-7 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(124,58,237,0.35)] transition hover:from-indigo-400 hover:to-purple-500"
+          >
             <WandSparkles className="h-4 w-4" />
             Analyze Now
           </button>

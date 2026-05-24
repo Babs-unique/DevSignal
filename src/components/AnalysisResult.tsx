@@ -122,7 +122,7 @@ export const AnalysisResult = () => {
 
       <main className="space-y-8 px-4 py-8 md:px-8">
         <section className="grid gap-6 xl:grid-cols-[357px_1fr]">
-          <article className="relative rounded-2xl border border-white/10 bg-[#09090c] px-6 py-7">
+          <div className="relative rounded-2xl border border-white/10 bg-[#09090c] px-6 py-7">
             <span className="absolute right-5 top-5 flex items-center gap-1.5 rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-400">
               <TrendingUp className="h-3.5 w-3.5" />
               High Match
@@ -153,9 +153,9 @@ export const AnalysisResult = () => {
                 role.
               </p>
             </div>
-          </article>
+          </div>
 
-          <article className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-7">
+          <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-7">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-lg font-semibold text-gray-100">
                 Skill Gap Analysis
@@ -205,11 +205,11 @@ export const AnalysisResult = () => {
                 </RadarChart>
               </ResponsiveContainer>
             </div>
-          </article>
+          </div>
         </section>
 
         <section className="grid gap-6 xl:grid-cols-2">
-          <article className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
+          <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
             <div className="mb-6 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400">
@@ -240,9 +240,9 @@ export const AnalysisResult = () => {
                 </div>
               ))}
             </div>
-          </article>
+          </div>
 
-          <article className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
+          <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
             <div className="mb-6 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-yellow-500/30 bg-yellow-500/10 text-yellow-400">
@@ -275,7 +275,7 @@ export const AnalysisResult = () => {
                 </div>
               ))}
             </div>
-          </article>
+          </div>
         </section>
 
         <section className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-7">

@@ -16,6 +16,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { SiReact } from 'react-icons/si'
+import { Link } from 'react-router-dom'
 
 const alignmentData = [
   { skill: 'React', profile: 90, required: 88 },
@@ -47,12 +48,12 @@ export const AnalysisDetails = () => {
     <div className="min-h-screen bg-[#030306] text-white">
       <header className="flex flex-col gap-4 border-b border-white/10 px-4 py-5 sm:flex-row sm:items-center sm:justify-between md:px-8">
         <div className="flex items-center gap-4">
-          <button
+          <Link to='/dashboard/history'
             className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 text-gray-400 transition hover:bg-white/5 hover:text-white"
             aria-label="Go back"
           >
             <ArrowLeft className="h-4 w-4" />
-          </button>
+          </Link>
           <div>
             <h1 className="text-xl font-bold">Analysis Detail</h1>
             <p className="mt-1 text-sm text-gray-400">
@@ -101,7 +102,7 @@ export const AnalysisDetails = () => {
         </section>
 
         <section className="grid gap-6 xl:grid-cols-[357px_1fr]">
-          <article className="rounded-2xl border border-white/10 bg-[#09110f] px-6 py-7 shadow-[0_0_70px_rgba(16,185,129,0.06)]">
+          <div className="rounded-2xl border border-white/10 bg-[#09110f] px-6 py-7 shadow-[0_0_70px_rgba(16,185,129,0.06)]">
             <p className="text-sm text-gray-400">Overall Match Score</p>
 
             <div className="mx-auto mt-7 flex h-48 w-48 items-center justify-center rounded-full shadow-[0_0_42px_rgba(16,185,129,0.18)]">
@@ -140,9 +141,9 @@ export const AnalysisDetails = () => {
                 <p className="mt-2 text-lg font-bold">5+ Yrs</p>
               </div>
             </div>
-          </article>
+          </div>
 
-          <article className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-7">
+          <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-7">
             <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-sm font-medium text-gray-400">
                 Skill Alignment Radar
@@ -191,11 +192,11 @@ export const AnalysisDetails = () => {
                 </RadarChart>
               </ResponsiveContainer>
             </div>
-          </article>
+          </div>
         </section>
 
         <section className="grid gap-6 xl:grid-cols-2">
-          <article className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
+          <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
             <div className="mb-6 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-red-500/30 bg-red-500/10 text-red-400">
@@ -228,9 +229,9 @@ export const AnalysisDetails = () => {
                 </div>
               ))}
             </div>
-          </article>
+          </div>
 
-          <article className="relative min-h-[386px] overflow-hidden rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
+          <div className="relative min-h-[386px] overflow-hidden rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
             <div className="mb-6 flex items-center gap-3">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400">
                 <Lightbulb className="h-4 w-4" />
@@ -266,7 +267,7 @@ export const AnalysisDetails = () => {
                 2
               </span>
             </div>
-          </article>
+          </div>
         </section>
       </main>
     </div>

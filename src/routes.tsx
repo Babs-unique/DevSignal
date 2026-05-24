@@ -8,6 +8,7 @@ import { Dashboard } from './pages/Dashboard'
 import { AnalysisPage } from './pages/AnalysisPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { SettingsPage } from './pages/SettingsPage'
+import { AnalysisDetails } from './components/AnalysisDetails'
 
 
 export const router = createBrowserRouter([
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
         children: [
             {index: true, element: <Dashboard/>},
             {path: 'analysis',  element : <AnalysisPage/>},
+            {path: 'analysis-details',  element : <AnalysisDetails/>},
             {path: 'history',  element: <HistoryPage/>},
             {path: 'settings' , element : <SettingsPage/>}
 
