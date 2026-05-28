@@ -224,8 +224,8 @@ export const HomePage = () => {
       </section>
 
       <footer className="border-t border-white/10 bg-black px-6 py-8">
-        <div className="mx-auto flex max-w-[1370px] flex-col items-center justify-between gap-5 sm:flex-row">
-          <p className="flex items-center gap-2 text-sm font-medium text-[#8d93a2]">
+        <div className="mx-auto flex max-w-[1370px] flex-col items-center md:justify-between gap-5 sm:flex-row justify-center ">
+          <p className="flex items-center gap-2 text-sm font-medium text-[#8d93a2]  justify-between flex-col md:flex-row">
             <Code2 size={19} />
             &copy; 2026 DevSignal. All rights reserved.
           </p>
