@@ -9,6 +9,7 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+    base: process.env.VITE_BASE_PATH || "/DevSignal",
     resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

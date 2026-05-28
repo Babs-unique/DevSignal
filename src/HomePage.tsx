@@ -1,241 +1,241 @@
-import type React from 'react';
-import heroImg from './assets/hero.png'
-import {Cpu, ChartPie ,Cable } from 'lucide-react'
-import {
-    FaGithub,
-    FaTwitter,
-    FaDiscord,
-
-} from 'react-icons/fa'
+import heroImg from './assets/hero.png';
+import { ArrowRight, Cable, ChartPie, Code2, Cpu, Link2, Sparkles } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+import { FaDiscord, FaGithub, FaTwitter } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-
 type Feature = {
-    icon: React.FC<React.SVGProps<SVGSVGElement>>   ;
-    title: string;
-    description: string;
-    linkText: string;
-    link?: string;
-}
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  linkText: string;
+  linkColor: string;
+  iconWrap: string;
+  iconColor: string;
+};
+
+const features: Feature[] = [
+  {
+    icon: Cpu,
+    title: 'Deep AI Insights',
+    description:
+      "We don't just look for keywords. We analyze the context of your experience to ensure it aligns with the seniority and technical depth required.",
+    linkText: 'Explore Insights',
+    linkColor: 'text-[#8ea2ff]',
+    iconWrap: 'bg-[#151735] border-[#343a85]',
+    iconColor: 'text-[#8ea2ff]',
+  },
+  {
+    icon: ChartPie,
+    title: 'Skill Gap Analysis',
+    description:
+      "Instantly visualize the delta between your current stack and the job's requirements with clear, developer-friendly metrics.",
+    linkText: 'View Gap Metrics',
+    linkColor: 'text-[#d98cff]',
+    iconWrap: 'bg-[#2b143d] border-[#6b2f8e]',
+    iconColor: 'text-[#d98cff]',
+  },
+  {
+    icon: Cable,
+    title: 'Actionable Roadmap',
+    description:
+      'Get a prioritized list of quick wins to update on your resume, and a learning path for critical missing technologies.',
+    linkText: 'See Example Roadmap',
+    linkColor: 'text-[#58b7ff]',
+    iconWrap: 'bg-[#10223a] border-[#255b91]',
+    iconColor: 'text-[#58b7ff]',
+  },
+];
+
 export const HomePage = () => {
-    const features: Feature[] = [
-        {
-            icon: Cpu , 
-            title: 'Deep AI Insights',
-            description : 'We dont just look for keywords.We analyse the context of your experience to ensure its aligns with the seniority and technical depth required.',
-            linkText: 'Explore Insights',
-            link: '#'
-        },
-        {
-            icon: ChartPie,
-            title: 'Skill Gap Analysis',
-            description : 'Instantly visualize the delta between your current stack and the job requirements with clear, developer-friendly metrics.',
-            linkText: 'View Gap Metrics',
-            link: '#'
-        },
-        {
-            icon: Cable,
-            title: 'Actionable Roadmap',
-            description : 'Get a personalized list of quick wins to update your resume, and a learning path to critical missing technologies.',
-            linkText: 'See example roadmap',
-            link: '#'
-        }
-    ]
-    const navigate = useNavigate();
-    const navigateToLogin = () => {
-        navigate('/login');
-    }
+  const navigate = useNavigate();
+
   return (
-    <main className="bg-black h-full text-white">
-        <header className='p-5'>
-            <nav>
-                <ul className='flex justify-between'>
-                    <li className='flex gap-2'>
-                        <img src={heroImg} alt="" />
-                        <p className='font-bold'>DevSignal</p>
-                    </li>
-                    <li className='text-gray-400 font-medium' onClick={navigateToLogin}>
-                        Sign In
-                    </li>
-                </ul>
-            </nav>
-        </header>
-        <section className='p-5 flex flex-col gap-5 items-center text-center sm:'>
-            <div
-                    className="
-                    absolute
-                    top-[80px]
-                    left-1/2
-                    -translate-x-1/2
-                    w-[900px]
-                    h-[300px]
-                    bg-gradient-to-b
-                    from-[#7C3AED]/40
-                    via-[#7C3AED]/10
-                    to-transparent
-                    blur-3xl
-                    opacity-80
-                    "
-                />
+    <main className="min-h-screen overflow-hidden bg-[#050608] text-white">
+      <header className="relative z-20 px-6 py-6 sm:px-8 lg:px-10">
+        <nav className="flex items-center justify-between">
+          <button
+            type="button"
+            className="flex items-center gap-3"
+            aria-label="DevSignal home"
+          >
+            <img src={heroImg} alt="" className="h-9 w-9 rounded-md" />
+            <span className="text-xl font-bold tracking-[-0.01em]">DevSignal</span>
+          </button>
 
-            <div className='border pt-2 pb-2 p-4 rounded-full bg-black-800 border-gray-700'>
-                <p className='text-xs text-gray-200'>v2.0 Beta AI Engine Active</p>
-            </div>
-            <div className='sm:w-xl'>
-                <h1 className='font-bold text-5xl'>Understand Why You’re 
-                <span className='bg-gradient-to-r from-[#9494ed] to-[#b385fb] bg-clip-text text-transparent'> Not Getting Hired</span>
-                </h1>
-            </div>
-            <div className='sm:w-2xl'>
-                <p className='text-gray-400 font-bold leading-7'>Stop guessing. Our AI-powered analyzer parses your resume against target job descriptions, revealing exact missing skills, ATS blind spots, and actionable code-level recommendations.</p>
-            </div>
-            <div className='flex flex-col justify-center items-center gap-4'>
-                <div className = 'flex flex-col gap-2 sm:flex-row sm:gap-4 '>
-                <input type="text" placeholder="&#128279; Paste Job Description URL..." className='border py-2 px-4 w-full border-gray-700 rounded-lg text-xs' />
-                <button className='bg-gradient-to-r from-[#5644e6] to-[#9034e9]  w-full  p-4 rounded-lg text-nowrap'>Analyze My Resume</button>
-                </div>
-                <p className='text-nowrap text-gray-400 text-sm'>No credit card required. Free tier available.</p>
-            </div>
-        </section>
-        <section className="w-full flex justify-center px-5 mt-10">
-  <div className="w-full max-w-5xl rounded-2xl border border-white/10 bg-[#07070B] overflow-hidden shadow-[0_0_100px_rgba(124,58,237,0.12)]">
+          <button
+            type="button"
+            onClick={() => navigate('/login')}
+            className="text-sm font-medium text-[#a4a7b2] transition hover:text-white"
+          >
+            Sign In
+          </button>
+        </nav>
+      </header>
 
-    {/* Top Bar */}
-    <div className="h-12 border-b border-white/10 flex items-center px-5 gap-3 bg-[#0B0B12]">
+      <section className="relative isolate px-5 pt-16 text-center sm:pt-20">
+        <div className="absolute left-1/2 top-8 -z-10 h-[620px] w-[78rem] -translate-x-1/2 bg-[linear-gradient(rgba(120,104,255,0.09)_1px,transparent_1px),linear-gradient(90deg,rgba(120,104,255,0.09)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(ellipse_at_center,black_0%,black_34%,transparent_72%)]" />
+        <div className="absolute left-1/2 top-4 -z-10 h-[430px] w-[760px] -translate-x-1/2 rounded-full bg-[#7c4dff]/10 blur-3xl" />
 
-      {/* Mac Dots */}
-      <div className="flex gap-2">
-        <div className="w-3 h-3 rounded-full bg-[#4B5563]" />
-        <div className="w-3 h-3 rounded-full bg-[#4B5563]" />
-        <div className="w-3 h-3 rounded-full bg-[#4B5563]" />
-      </div>
-
-      {/* Path */}
-      <div className="flex items-center text-sm font-mono flex-wrap">
-        <span className="text-gray-500">
-          ~/devsignal/analysis
-        </span>
-
-        <span className="text-[#8B5CF6]">
-          master*
-        </span>
-      </div>
-    </div>
-
-    {/* Body */}
-    <div className="sm:grid sm:grid sm:grid-cols-[1fr_2fr] sm:gap-8 p-4 flex flex-col gap-8 ">
-
-      {/* Left */}
-      <div className="flex flex-col gap-8">
-
-        <div>
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-gray-300 text-xl">
-              Match Score
-            </p>
-
-            <h3 className="text-2xl font-bold text-white">
-              68%
-            </h3>
-          </div>
-
-          {/* Progress */}
-          <div className="w-full h-3 rounded-full bg-[#111118] overflow-hidden">
-            <div className="w-[68%] h-full bg-gradient-to-r from-[#7C3AED] to-[#A855F7]" />
-          </div>
+        <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#12131a] px-4 py-2 font-mono text-xs text-[#d7d8df] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+          <span className="h-2 w-2 rounded-full bg-[#5966ff]" />
+          v2.0 Beta AI Engine Active
         </div>
 
-        {/* Missing */}
-        <div className="flex flex-col items-center gap-5">
+        <h1 className="mx-auto mt-9 max-w-5xl text-balance text-5xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-7xl lg:text-[86px]">
+          Understand Why You&apos;re
+          <span className="block bg-gradient-to-r from-[#8587ff] to-[#c37aff] bg-clip-text text-transparent">
+            Not Getting Hired
+          </span>
+        </h1>
 
-          <p className="tracking-[0.3em] text-xs text-gray-500 uppercase font-mono">
-            Critical Missing
+        <p className="mx-auto mt-8 max-w-3xl text-balance text-lg font-medium leading-8 text-[#a2a6b3] sm:text-xl">
+          Stop guessing. Our AI-powered analyzer parses your resume against target job
+          descriptions, revealing exact missing skills, ATS blind spots, and actionable
+          code-level recommendations.
+        </p>
+
+        <div className="mt-11 flex flex-col items-center gap-4">
+          <div className="flex w-full max-w-[500px] flex-col items-stretch justify-center gap-4 sm:max-w-[560px] sm:flex-row">
+            <label className="flex h-14 flex-1 items-center gap-3 rounded-lg border border-white/10 bg-[#101116] px-5 text-[#7f8494] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+              <Link2 size={18} />
+              <input
+                type="text"
+                placeholder="Paste Job Description"
+                className="min-w-0 flex-1 bg-transparent text-sm font-medium text-white outline-none placeholder:text-[#7f8494]"
+              />
+            </label>
+
+            <button
+              type="button"
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#6356ff] to-[#a93af2] px-7 text-sm font-bold text-white shadow-[0_0_30px_rgba(132,74,255,0.35)] transition hover:brightness-110"
+            >
+              Analyze My Resume
+              <ArrowRight size={18} />
+            </button>
+          </div>
+
+          <p className="font-mono text-xs text-[#747886]">
+            No credit card required. Free tier available.
           </p>
+        </div>
+      </section>
 
-          <div className="flex gap-4">
-            <span className="border border-red-500/30 bg-red-500/10 text-red-400 px-4 py-2 rounded-md text-sm font-mono">
-              GraphQL
-            </span>
+      <section className="mx-auto mt-24 w-full max-w-[1130px] px-5">
+        <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#06070a] shadow-[0_0_90px_rgba(82,72,194,0.16)]">
+          <div className="flex h-12 items-center gap-6 border-b border-white/10 bg-[#090a0f] px-6">
+            <div className="flex gap-2">
+              <span className="h-3 w-3 rounded-full bg-[#42506a]" />
+              <span className="h-3 w-3 rounded-full bg-[#42506a]" />
+              <span className="h-3 w-3 rounded-full bg-[#42506a]" />
+            </div>
+            <p className="font-mono text-xs text-[#7f8494]">
+              ~/devsignal/analysis
+              <span className="ml-6 text-[#7e78ff]">master*</span>
+            </p>
+          </div>
 
-            <span className="border border-red-500/30 bg-red-500/10 text-red-400 px-4 py-2 rounded-md text-sm font-mono">
-              Docker
-            </span>
+          <div className="grid gap-8 p-8 lg:grid-cols-[290px_1fr] lg:p-10">
+            <div className="flex flex-col justify-between gap-10">
+              <div>
+                <div className="mb-5 flex items-center justify-between">
+                  <p className="text-base font-semibold text-[#d4d6dd]">Match Score</p>
+                  <p className="text-3xl font-extrabold">68%</p>
+                </div>
+                <div className="h-3 rounded-full bg-[#111218]">
+                  <div className="h-full w-[68%] rounded-full bg-gradient-to-r from-[#6356ff] to-[#ad45ff]" />
+                </div>
+              </div>
+
+              <div className="text-center">
+                <p className="mb-5 font-mono text-xs uppercase tracking-[0.32em] text-[#747886]">
+                  Critical Missing
+                </p>
+                <div className="flex justify-center gap-3">
+                  <span className="rounded border border-red-500/40 bg-red-500/10 px-3 py-2 font-mono text-xs text-red-300">
+                    GraphQL
+                  </span>
+                  <span className="rounded border border-red-500/40 bg-red-500/10 px-3 py-2 font-mono text-xs text-red-300">
+                    Docker
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-white/10 bg-[#101114] p-5 sm:p-6">
+              <h3 className="mb-4 flex items-center gap-2 text-base font-medium text-white">
+                <Sparkles size={18} className="text-[#d98cff]" />
+                AI Suggestion: Experience Bullet
+              </h3>
+
+              <p className="mb-3 text-center font-mono text-sm text-red-400/75 line-through">
+                - Built APIs for the frontend team.
+              </p>
+              <p className="mx-auto max-w-2xl text-center font-mono text-sm leading-7 text-[#2bec7f]">
+                + Designed and implemented RESTful APIs using Node.js/Express, reducing
+                frontend load times by 30% and supporting 10K+ daily active users.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Right */}
-      <div className="bg-[#0B0B12] border border-white/10 rounded-2xl p-2">
+      <section className="mx-auto mt-36 max-w-[1370px] px-6 pb-56">
+        <div className="text-center">
+          <h2 className="text-4xl font-extrabold tracking-[-0.02em] sm:text-5xl">
+            Backed by real power under the hood
+          </h2>
+          <p className="mx-auto mt-5 max-w-3xl text-lg leading-8 text-[#9da1ad]">
+            Our specialized LLM is trained on millions of successful engineering resumes and
+            technical job descriptions to provide precise, developer-centric feedback.
+          </p>
+        </div>
 
-        <h3 className="text-white text-lg mb-4 flex items-center gap-2">
-          <span className="text-[#A855F7]">
-            ✨
-          </span>AI Suggestion: Experience Bullet
-        </h3>
+        <div className="mt-20 grid gap-6 lg:grid-cols-3">
+          {features.map((feature) => {
+            const FeatureIcon = feature.icon;
 
-        {/* Old Text */}
-        <p className="text-center text-red-400/70 line-through font-mono mb-2 text-small ">
-          - Built APIs for the frontend team.
-        </p>
-
-        {/* New Text */}
-        <p className="text-[#22C55E] text-center font-mono text-small">
-          + Designed and implemented RESTful APIs using
-          Node.js/Express, reducing frontend load times
-          by 30% and supporting 10K+ daily active users.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-        <section className = 'flex flex-col items-center p-5 gap-2 sm:mt-8 gap-8'>
-            <div className='flex flex-col gap-2'>
-                <h2 className='font-bold text-2xl text-center'>Backed by real power under the hood</h2>
-                <p className='text-center text-gray-400 leading-7 sm:w-xl mx-auto '>Our specialized LLM is trained on millions of successful engineering resumes and technical job descriptions to provide precise, developer-centric feedback</p>
-            </div>
-            <div className='flex gap-4 flex-wrap sm:flex sm:flex-row sm:flex-nowrap'>
-        {features.map((item, index) => {
-            const FeatureIcon = item.icon
             return (
-                    <div
-                    key={index}
-                    className='p-5 rounded-lg flex flex-col gap-3 bg-[#0F0F14] border border-white/10'
-                    >
-                    <div className='w-fit p-3 rounded-lg bg-[#171726]'>
-                        <FeatureIcon className='text-[#8B5CF6]' size={24} />
-                    </div>
+              <article
+                key={feature.title}
+                className="rounded-lg border border-white/10 bg-[#0e0f12] p-7 transition hover:border-white/20"
+              >
+                <div
+                  className={`mb-8 flex h-13 w-13 items-center justify-center rounded-lg border ${feature.iconWrap}`}
+                >
+                  <FeatureIcon size={25} className={feature.iconColor} />
+                </div>
 
-                    <h3 className='font-bold text-xl'>
-                        {item.title}
-                    </h3>
+                <h3 className="text-xl font-bold">{feature.title}</h3>
+                <p className="mt-4 min-h-[96px] text-base leading-7 text-[#9da1ad]">
+                  {feature.description}
+                </p>
+                <a
+                  href="#"
+                  className={`mt-5 inline-flex items-center gap-1 text-base font-semibold ${feature.linkColor}`}
+                >
+                  {feature.linkText}
+                  <ArrowRight size={16} />
+                </a>
+              </article>
+            );
+          })}
+        </div>
+      </section>
 
-                    <p className='text-gray-400 leading-7'>
-                        {item.description}
-                    </p>
-
-                    <a
-                        href={item.link}
-                        className='text-[#8B5CF6] hover:underline'
-                    >
-                        {item.linkText} &#8594;
-                    </a>
-                    </div>
-                )
-                })
-            }
-    </div>
-        </section>
-        <footer className='mt-4 border-t border-white/10 flex flex-col items-center px-5 gap-2 sm:flex-row sm:justify-between m-0 bg-[#07070B]'>
-            <p className='text-center text-gray-400 text-sm py-5'>
-                &copy; 2026 DevSignal. All rights reserved.
-            </p>
-            <div className='flex gap-4 items-center'>
-                <FaGithub/>
-                <FaTwitter/>
-                <FaDiscord/>
-            </div>
-    </footer>
+      <footer className="border-t border-white/10 bg-black px-6 py-8">
+        <div className="mx-auto flex max-w-[1370px] flex-col items-center justify-between gap-5 sm:flex-row">
+          <p className="flex items-center gap-2 text-sm font-medium text-[#8d93a2]">
+            <Code2 size={19} />
+            &copy; 2026 DevSignal. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6 text-[#8d93a2]">
+            <FaGithub className="transition hover:text-white" />
+            <FaTwitter className="transition hover:text-white" />
+            <FaDiscord className="transition hover:text-white" />
+          </div>
+        </div>
+      </footer>
     </main>
-    
-)
-}
+  );
+};
