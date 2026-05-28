@@ -9,11 +9,12 @@ import { AnalysisPage } from './pages/AnalysisPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { AnalysisDetails } from './components/AnalysisDetails'
+import { ErrorPage } from './pages/ErrorPage'
 
 
 export const router = createBrowserRouter([
     {
-        path: "/",
+        path: "/DevSignal",
         element: <HomePage />
     },
     {
@@ -41,5 +42,9 @@ export const router = createBrowserRouter([
             {path: 'settings' , element : <SettingsPage/>}
 
         ]
+    },
+    {
+        path: "*",
+        element: <ErrorPage />
     }
 ]);

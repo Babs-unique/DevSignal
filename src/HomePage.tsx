@@ -102,7 +102,7 @@ export const HomePage = () => {
               <input
                 type="text"
                 placeholder="Paste Job Description"
-                className="min-w-0 flex-1 bg-transparent text-sm font-medium text-white outline-none placeholder:text-[#7f8494]"
+                className="min-w-0 flex-1 bg-transparent text-sm font-medium text-white outline-none placeholder:text-[#7f8494] py-3"
               />
             </label>
 
