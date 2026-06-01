@@ -14,7 +14,7 @@ import { ErrorPage } from './pages/ErrorPage'
 
 export const router = createBrowserRouter([
     {
-        path: "/DevSignal",
+        path: "/",
         element: <HomePage />
     },
     {
@@ -30,7 +30,7 @@ export const router = createBrowserRouter([
         element: <ResetPasswordPage />
     },
     {
-        path: "/Devsignal/dashboard",
+        path: "/dashboard",
         element: (
             <DashboardLayout />
         ),
