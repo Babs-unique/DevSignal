@@ -7,7 +7,23 @@ import {
   Trash2,
 } from 'lucide-react'
 import { SiGithub } from 'react-icons/si'
+import { useTheme } from '@/hooks/useTheme'
 export const GeneralSettings = () => {
+  const { theme, changeTheme } = useTheme()
+  const themesColors = [
+  {
+    name: 'Blue',
+    color: 'bg-blue-500',
+  },
+  {
+    name: 'Indigo',
+    color: 'bg-indigo-500',
+  },
+  {
+    name: 'Purple',
+    color: 'bg-purple-500',
+  },
+]
   return (
     <div className="space-y-8">
     <section className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
@@ -88,11 +104,21 @@ export const GeneralSettings = () => {
             </p>
           </div>
           <div className="flex gap-3">
-            <span className="h-8 w-8 rounded-full bg-blue-500" />
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-500 ring-2 ring-white">
-              <Check className="h-4 w-4" />
-            </span>
-            <span className="h-8 w-8 rounded-full bg-purple-500" />
+            {themesColors.map((item) => (
+          <button
+            key={item.name}
+            onClick={() => changeTheme(item.name)}
+            className={`
+              rounded-full border-2 transition h-10 w-10 ${item.color}
+              ${
+                theme === item.name
+                  ? 'border-white'
+                  : 'border-transparent'
+              }
+              `}>
+              {theme === item.name && <Check className="h-6 w-6 text-white align-middle m-auto" />}
+              </button>
+            ))}
           </div>
         </div>
 

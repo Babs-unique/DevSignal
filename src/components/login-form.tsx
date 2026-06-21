@@ -3,11 +3,32 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Code2 } from "lucide-react"
 import { Link } from 'react-router-dom'
+import Turnstile from "./security/turnStile"
 
+type LoginTypes = {
+  email: string
+  setEmail: (email: string) => void
+  password: string
+  setPassword: (password: string) => void
+  handleLogin: () => void
+  setToken: (token: string) => void
+  token: string
+  isLoading: boolean
+  className?: string
+}
 export function LoginForm({
+  email,
+  setEmail,
+  password,
+  setPassword,
+  handleLogin,
+  setToken,
+  token,
+  isLoading,
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: LoginTypes) {
+  
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <div className="flex flex-col gap-6 rounded-lg border border-white/10 bg-[#0F0F14] p-8">
@@ -31,6 +52,7 @@ export function LoginForm({
               type="email"
               placeholder="name@company.com"
               className="border-gray-700 bg-[#1A1A23] text-white placeholder:text-gray-500"
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
@@ -44,6 +66,7 @@ export function LoginForm({
               type="password"
               placeholder="••••••••"
               className="border-gray-700 bg-[#1A1A23] text-white placeholder:text-gray-500"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 

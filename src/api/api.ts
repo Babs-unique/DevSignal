@@ -3,10 +3,9 @@ import type { BaseQueryFn, FetchArgs, FetchBaseQueryError, BaseQueryApi } from '
 import { logout } from '../feature/apiSlice.js';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_BASE_URL || 'https://insighta-api.onrender.com',
+    baseUrl: import.meta.env.VITE_API_BASE_URL || '',
     credentials: 'include',
     prepareHeaders: (headers) => {
-        headers.set('x-api-version', "1")
         return headers;
     }
 })
