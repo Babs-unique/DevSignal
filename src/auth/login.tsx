@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux"
 import { useLoginMutation } from "@/feature/authSlice"
 import { setCredentials } from "@/feature/apiSlice"
 import type { TurnstileInstance } from "@marsidev/react-turnstile"
+import { useTogglePassword } from "@/utils/togglePassword"
 
 
 export default function LoginPage() {
@@ -13,13 +14,15 @@ export default function LoginPage() {
     const [token , setToken ] = useState<string>("")
 
     const turnstileRef = useRef<TurnstileInstance>(null);
+
+    const { isHidden, togglePassword } = useTogglePassword();
   
     const [ login , {isLoading}]= useLoginMutation()
   
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
+    const handleLogin = async () => {
+     /*  e.preventDefault() */
       try{
           const userData = await login({email, password, token}).unwrap()
           if(userData){
@@ -39,16 +42,16 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10 bg-black text-white">
       <div className="flex w-full max-w-sm flex-col gap-6">
-        <LoginForm 
-          email={email}
+        <LoginForm
           setEmail={setEmail}
-          password={password}
           setPassword={setPassword}
           token={token}
           setToken={setToken}
           handleLogin={handleLogin}
           isLoading={isLoading}
           turnstileRef={turnstileRef}
+          togglePassword={togglePassword}
+          isHidden={isHidden}
         />
       </div>
     </div>

@@ -3,31 +3,46 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Code2 } from "lucide-react"
 import { Link } from 'react-router-dom'
+import { Eye , EyeOff} from 'lucide-react'
 import Turnstile from "./security/turnStile"
+import type { TurnstileInstance } from "@marsidev/react-turnstile"
 
 type LoginTypes = {
-  email: string
   setEmail: (email: string) => void
-  password: string
   setPassword: (password: string) => void
   handleLogin: () => void
   setToken: (token: string) => void
   token: string
   isLoading: boolean
   className?: string
+  isHidden: boolean
+  turnstileRef: React.RefObject<TurnstileInstance | null >
+  togglePassword: () => void
+
 }
 export function LoginForm({
-  email,
   setEmail,
-  password,
   setPassword,
   handleLogin,
   setToken,
   token,
   isLoading,
+  isHidden,
+  togglePassword,
+  turnstileRef,
   className,
   ...props
 }: LoginTypes) {
+
+   const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!token) {
+      alert("Please complete the security check.")
+      return
+    }
+    handleLogin()
+  }
+
   
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -44,7 +59,7 @@ export function LoginForm({
         </div>
 
         {/* Form */}
-        <form className="flex flex-col gap-4">
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           {/* Email */}
           <div className="flex flex-col gap-2">
             <label className="text-sm text-gray-300">Email address</label>
@@ -57,24 +72,31 @@ export function LoginForm({
           </div>
 
           {/* Password */}
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 relative">
             <div className="flex justify-between">
               <label className="text-sm text-gray-300">Password</label>
               <Link to='/reset' className="text-xs text-blue-700 self-end">Forgot password?</Link>
             </div>
             <Input
-              type="password"
+              type={isHidden ? 'password' : 'text'}
               placeholder="••••••••"
               className="border-gray-700 bg-[#1A1A23] text-white placeholder:text-gray-500"
               onChange={(e) => setPassword(e.target.value)}
             />
+            {isHidden ? <Eye className="h-5 w-5 text-white absolute top-10 right-2" onClick={togglePassword}/> : <EyeOff className="h-5 w-5 text-white absolute top-10 right-2" onClick={togglePassword}/>}
           </div>
 
           {/* Sign Up Button */}
-          <Button className="mt-2 w-full bg-linear-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600">
-            Sign In →
+          <Button type='submit'
+            disabled={isLoading}
+            className="mt-2 w-full bg-linear-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600">
+              {isLoading ? "Signing In..." : "Sign In →"}
           </Button>
         </form>
+
+        <Turnstile
+          ref={turnstileRef}
+          onVerify={setToken} />
 
         {/* Divider */}
         <div className="relative flex items-center gap-4">
