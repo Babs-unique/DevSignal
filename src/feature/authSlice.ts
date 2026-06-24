@@ -10,7 +10,7 @@ const authSlice = api.injectEndpoints({
                 body: credentials,
             }),
         }),
-        register: builder.mutation<{ accessToken: string }, { email: string; password: string, token: string}>({
+        register: builder.mutation<{ accessToken: string }, { email: string; password: string, confirmPassword: string , token: string}>({
             query: (credentials) => ({
                 url: "/api/auth/register",
                 method: "POST",

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { Eye , EyeOff} from 'lucide-react'
 import Turnstile from "./security/turnStile"
 import type { TurnstileInstance } from "@marsidev/react-turnstile"
+import { toast } from "react-toastify"
 
 type LoginTypes = {
   setEmail: (email: string) => void
@@ -37,7 +38,7 @@ export function LoginForm({
    const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!token) {
-      alert("Please complete the security check.")
+      toast.error('Please verify you are not a robot')
       return
     }
     handleLogin()
@@ -68,6 +69,7 @@ export function LoginForm({
               placeholder="name@company.com"
               className="border-gray-700 bg-[#1A1A23] text-white placeholder:text-gray-500"
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
@@ -82,6 +84,7 @@ export function LoginForm({
               placeholder="••••••••"
               className="border-gray-700 bg-[#1A1A23] text-white placeholder:text-gray-500"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
             {isHidden ? <Eye className="h-5 w-5 text-white absolute top-10 right-2" onClick={togglePassword}/> : <EyeOff className="h-5 w-5 text-white absolute top-10 right-2" onClick={togglePassword}/>}
           </div>

@@ -10,6 +10,7 @@ import { HistoryPage } from './pages/HistoryPage'
 import { SettingsPage } from './pages/SettingsPage'
 import { AnalysisDetails } from './components/AnalysisDetails'
 import { ErrorPage } from './pages/ErrorPage'
+import { AuthCallbackPage } from './pages/AuthCallbackPage'
 
 
 export const router = createBrowserRouter([
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
     {
         path: "/reset",
         element: <ResetPasswordPage />
+    },
+    {
+        path:"/auth/callback",
+        element: <AuthCallbackPage/>
     },
     {
         path: "/dashboard",

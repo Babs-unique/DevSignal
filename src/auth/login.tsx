@@ -6,7 +6,7 @@ import { useLoginMutation } from "@/feature/authSlice"
 import { setCredentials } from "@/feature/apiSlice"
 import type { TurnstileInstance } from "@marsidev/react-turnstile"
 import { useTogglePassword } from "@/utils/togglePassword"
-
+import { toast } from "react-toastify"
 
 export default function LoginPage() {
   const [email, setEmail] = useState<string>("")
@@ -30,13 +30,14 @@ export default function LoginPage() {
             setPassword('');
             setToken('')
           }
-  
+          toast.success('Login successful')
           dispatch(setCredentials(userData))
           setTimeout(() => {
               navigate("/Dashboard", { replace: true });
           }, 2000);
       }catch(e){
           console.error('Error logging in:', e);
+          toast.error('Login failed')
       }
     }
   return (
