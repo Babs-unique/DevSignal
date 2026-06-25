@@ -1,15 +1,21 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { SignupForm } from "@/components/signup-form"
 import { useRegisterMutation } from "@/feature/authSlice"
 import type { TurnstileInstance } from "@marsidev/react-turnstile"
 import { useTogglePassword } from "@/utils/togglePassword"
-import { toast } from "react-toastify"
 import { useNavigate } from "react-router-dom"
+import { toast } from 'react-toastify';
+import { useGetGithubAuthUrlQuery } from '@/feature/githubOauthSlice';
+import { useGetGoogleAuthUrlQuery } from '@/feature/googleOauthSlice';
 export const SignupPage = () => {
   const [email , setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
   const [ confirmPassword , setConfirmPassword ] = useState<string>("")
   const [token , setToken ] = useState<string>("")
+
+    const { data: githubAuthData, isLoading: isGithubLoading, error: githubError } = useGetGithubAuthUrlQuery();
+    const { data: googleAuthData, isLoading: isGoogleLoading, error: googleError } = useGetGoogleAuthUrlQuery();
 
   const turnstileRef = useRef<TurnstileInstance>(null);
   const { isHidden, togglePassword } = useTogglePassword();
@@ -34,6 +40,25 @@ export const SignupPage = () => {
           toast.error('Error creating account')
       }
   }
+  const [searchParams] = useSearchParams();
+    const errorParam = searchParams.get('error');
+    const [showError, setShowError] = useState(!!errorParam);
+  
+    useEffect(() => {
+      if (showError) {
+        const timer = setTimeout(() => setShowError(false), 10000);
+        return () => clearTimeout(timer);
+      }
+    }, [showError]);
+  
+    const handleOauthSignUp = (provider: 'google' | 'github') => {
+      const authData = provider === 'google' ? googleAuthData : githubAuthData;
+      if (authData?.authUrl) {
+        window.location.href = authData.authUrl;
+      } else {
+        toast.error(`${provider} login is not available right now.`);
+      }
+    };
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10 bg-black text-white">
       <div className="flex w-full max-w-sm flex-col gap-6">
@@ -48,6 +73,11 @@ export const SignupPage = () => {
           togglePassword={togglePassword}
           turnstileRef={turnstileRef}
           token={token}
+          oauthSignUp={handleOauthSignUp}
+          isLoadingUrl={isGithubLoading || isGoogleLoading}
+          urlError={githubError || googleError}
+          showError={showError}
+          errorParam={errorParam}
         />
       </div>
     </div>

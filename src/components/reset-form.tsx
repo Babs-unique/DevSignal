@@ -40,7 +40,7 @@ export function ResetForm({
             Send reset link <Send />
           </Button>
         </form>
-      <Link to='/signUp' className=" text-xs text-gray-500 underline flex items-center gap-1 justify-center">
+      <Link to='/login' className=" text-xs text-gray-500 underline flex items-center gap-1 justify-center">
         <ChevronLeft /> Back to Login
       </Link>
       </div>
