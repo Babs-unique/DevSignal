@@ -23,7 +23,7 @@ export const SettingsPage = () => {
 
         <button
           type="button"
-          className="flex w-fit items-center gap-2 rounded-md bg-linear-to-br from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(124,58,237,0.35)] transition-colors duration-300 hover:from-indigo-400 hover:to-purple-500"
+          className="theme-gradient theme-shadow flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
         >
           <Check className="h-4 w-4" />
           Save Changes
@@ -39,7 +39,7 @@ export const SettingsPage = () => {
               onClick={() => setActiveTab(tab)}
               className={`border-b-2 px-1 pb-4 text-sm font-medium transition ${
                 activeTab === tab
-                  ? 'border-indigo-400 text-indigo-300'
+                  ? 'theme-tab-active'
                   : 'border-transparent text-gray-500 hover:text-gray-300'
               }`}
             >

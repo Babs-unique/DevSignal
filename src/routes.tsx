@@ -11,7 +11,7 @@ import { SettingsPage } from './pages/SettingsPage'
 import { AnalysisDetails } from './components/AnalysisDetails'
 import { ErrorPage } from './pages/ErrorPage'
 import { AuthCallbackPage } from './pages/AuthCallbackPage'
-
+import ProtectedRoute from './auth/ProtectedRoute'
 
 export const router = createBrowserRouter([
     {
@@ -37,7 +37,9 @@ export const router = createBrowserRouter([
     {
         path: "/dashboard",
         element: (
+            <ProtectedRoute>
             <DashboardLayout />
+            </ProtectedRoute>
         ),
         children: [
             {index: true, element: <Dashboard/>},

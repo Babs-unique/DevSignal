@@ -2,6 +2,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { FaAmazon } from 'react-icons/fa'
 import { SiDocker, SiMongodb } from 'react-icons/si'
+import type { DashboardResponse} from '@/feature/dashboardSlice'
 
 const skills = [
   {
@@ -52,7 +53,15 @@ const analysis = [
   },
 ]
 
-export const Stats = () => {
+type statsType = { 
+  data: DashboardResponse | undefined,
+  isLoading: boolean
+}
+
+export const Stats = ({
+  data,
+  isLoding
+} : statsType)  => {
   return (
     <section className="grid gap-6 xl:grid-cols-[minmax(300px,357px)_1fr]">
       <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6 shadow-[0_0_60px_rgba(124,58,237,0.08)]">

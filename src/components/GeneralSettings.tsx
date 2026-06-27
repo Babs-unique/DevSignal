@@ -8,19 +8,30 @@ import {
 } from 'lucide-react'
 import { SiGithub } from 'react-icons/si'
 import { useTheme } from '@/hooks/useTheme'
+import type { Theme } from '@/contexts/ThemeContext'
+
+type ThemeColorOption = {
+  name: string
+  value: Theme
+  color: string
+}
+
 export const GeneralSettings = () => {
   const { theme, changeTheme } = useTheme()
-  const themesColors = [
+  const themesColors: ThemeColorOption[] = [
   {
     name: 'Blue',
+    value: 'blue',
     color: 'bg-blue-500',
   },
   {
     name: 'Indigo',
+    value: 'indigo',
     color: 'bg-indigo-500',
   },
   {
     name: 'Purple',
+    value: 'purple',
     color: 'bg-purple-500',
   },
 ]
@@ -36,10 +47,10 @@ export const GeneralSettings = () => {
 
       <div className="flex flex-col gap-7 md:flex-row md:items-start">
         <div className="flex w-28 shrink-0 flex-col items-center gap-3">
-          <div className="flex h-20 w-20 items-center justify-center rounded-full border border-white/10 bg-linear-to-br from-indigo-500/30 to-purple-500/20 text-2xl font-bold">
+          <div className="theme-soft-bg theme-border flex h-20 w-20 items-center justify-center rounded-full border text-2xl font-bold">
             AD
           </div>
-          <button type="button" className="text-xs font-medium text-indigo-400">
+          <button type="button" className="theme-text text-xs font-medium">
             Change Avatar
           </button>
         </div>
@@ -50,7 +61,7 @@ export const GeneralSettings = () => {
             <input
               type="text"
               defaultValue="Alex"
-              className="mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition focus:border-indigo-500/60"
+              className="theme-focus mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition"
             />
           </label>
           <label className="block">
@@ -58,7 +69,7 @@ export const GeneralSettings = () => {
             <input
               type="text"
               defaultValue="Developer"
-              className="mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition focus:border-indigo-500/60"
+              className="theme-focus mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition"
             />
           </label>
           <label className="block sm:col-span-2">
@@ -80,7 +91,7 @@ export const GeneralSettings = () => {
             <input
               type="text"
               defaultValue="Senior Frontend Engineer"
-              className="mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition focus:border-indigo-500/60"
+              className="theme-focus mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition"
             />
           </label>
         </div>
@@ -106,17 +117,19 @@ export const GeneralSettings = () => {
           <div className="flex gap-3">
             {themesColors.map((item) => (
           <button
-            key={item.name}
-            onClick={() => changeTheme(item.name)}
+            key={item.value}
+            type="button"
+            aria-label={`Use ${item.name} accent color`}
+            onClick={() => changeTheme(item.value)}
             className={`
               rounded-full border-2 transition h-10 w-10 ${item.color}
               ${
-                theme === item.name
+                theme === item.value
                   ? 'border-white'
                   : 'border-transparent'
               }
               `}>
-              {theme === item.name && <Check className="h-6 w-6 text-white align-middle m-auto" />}
+              {theme === item.value && <Check className="h-6 w-6 text-white align-middle m-auto" />}
               </button>
             ))}
           </div>
@@ -191,7 +204,7 @@ export const GeneralSettings = () => {
             </div>
           </div>
 
-          <button className="rounded-lg border border-indigo-500/40 bg-indigo-500/10 px-4 py-2 text-xs font-semibold text-indigo-300 transition hover:bg-indigo-500/20">
+          <button className="theme-soft-bg theme-border theme-text rounded-lg border px-4 py-2 text-xs font-semibold transition hover:brightness-125">
             Connect
           </button>
         </div>
@@ -214,7 +227,7 @@ export const GeneralSettings = () => {
           <input
             type="password"
             defaultValue="password"
-            className="mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition focus:border-indigo-500/60"
+            className="theme-focus mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition"
           />
         </label>
         <label className="block">
@@ -222,7 +235,7 @@ export const GeneralSettings = () => {
           <input
             type="password"
             defaultValue="password"
-            className="mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition focus:border-indigo-500/60"
+            className="theme-focus mt-2 h-11 w-full rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm outline-none transition"
           />
           <p className="mt-2 text-xs text-gray-500">
             Must be at least 8 characters long.

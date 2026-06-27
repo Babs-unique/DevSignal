@@ -7,6 +7,7 @@ import {
   RadarChart,
   ResponsiveContainer,
 } from 'recharts'
+import type { DashboardResponse } from '@/feature/dashboardSlice'
 
 const skillData = [
   { skill: 'React/Vue', profile: 86, required: 82 },
@@ -42,7 +43,17 @@ const nextSteps = [
   },
 ]
 
-export const DashboardSkillInsights = () => {
+type SkillInsightsType = { 
+  data: DashboardResponse | undefined,
+  isLoading: boolean
+}
+
+export const DashboardSkillInsights = (
+  {
+    data,
+    isLoading
+  }: SkillInsightsType
+) => {
   return (
     <section className="grid gap-6 xl:grid-cols-[1fr_357px]">
       <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">

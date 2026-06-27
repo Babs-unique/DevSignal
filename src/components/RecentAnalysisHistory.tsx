@@ -1,3 +1,4 @@
+import type { DashboardResponse } from '@/feature/dashboardSlice'
 import { Link } from 'react-router-dom'
 const history = [
   {
@@ -20,7 +21,15 @@ const history = [
   },
 ]
 
-export const RecentAnalysisHistory = () => {
+type AnalysesHistoryTypes = {
+  data: DashboardResponse | undefined,
+  isLoading: boolean,
+}
+
+export const RecentAnalysisHistory = ({
+  data,
+  isLoading
+}: AnalysesHistoryTypes) => {
   return (
     <section className="overflow-hidden rounded-2xl border border-white/10 bg-[#09090c]">
       <div className="flex items-center justify-between border-b border-white/10 px-6 py-6">

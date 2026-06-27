@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   WandSparkles
 } from 'lucide-react'
@@ -5,8 +6,9 @@ import { Link } from 'react-router-dom'
 import { DashboardSkillInsights } from '../components/DashboardSkillInsights'
 import { RecentAnalysisHistory } from '../components/RecentAnalysisHistory'
 import { Stats } from '../components/stats'
-
+import { useGetDashboardQuery } from '@/feature/dashboardSlice'
 export const Dashboard = () => {
+  const { data, isLoading } = useGetDashboardQuery()
   return (
     <div className='min-h-screen bg-[#030306] text-white'>
       <header className='flex flex-col gap-4 border-b border-white/10 px-4 py-5 sm:flex-row sm:items-center sm:justify-between md:px-8'>
@@ -21,9 +23,18 @@ export const Dashboard = () => {
         </div>
       </header>
       <main className='space-y-8 px-4 py-8 md:px-8'>
-        <Stats />
-        <DashboardSkillInsights />
-        <RecentAnalysisHistory />
+        <Stats
+          data={data}
+          isLoading={isLoading}
+        />
+        <DashboardSkillInsights
+          data={data}
+          isLoading={isLoading}
+        />
+        <RecentAnalysisHistory 
+          data={data}
+          isLoading={isLoading}
+        />
       </main>
     </div>
   )

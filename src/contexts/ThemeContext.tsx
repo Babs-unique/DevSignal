@@ -1,7 +1,9 @@
 import { createContext, useEffect, useState, } from "react"; 
 import type { ReactNode } from "react"; 
 
-type Theme = "blue" | "purple" | "green"; 
+export const themes = ["blue", "indigo", "purple"] as const;
+
+export type Theme = (typeof themes)[number]; 
 
 type ThemeContextType = { 
   theme: Theme; 
@@ -12,11 +14,15 @@ export const ThemeContext = createContext<ThemeContextType | null>(null);
 
 const DEFAULT_THEME: Theme = "blue"; 
 
+const isTheme = (value: string | null): value is Theme => {
+  return themes.includes(value as Theme);
+};
+
 export const ThemeProvider = ({children}: { children: ReactNode }) => { 
   const [theme, setTheme] = useState<Theme>(() => { 
     const savedTheme = localStorage.getItem("devsignal-theme"); 
     
-    if (savedTheme === "blue" || savedTheme === "purple" || savedTheme === "green") {
+    if (isTheme(savedTheme)) {
       return savedTheme;
     }
     

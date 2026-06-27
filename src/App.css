@@ -1,6 +1,70 @@
 @import "@fontsource-variable/geist";
 
 @custom-variant dark (&:is(.dark *));
+
+:root,
+[data-theme="blue"] {
+  --theme-accent: #3b82f6;
+  --theme-accent-hover: #60a5fa;
+  --theme-accent-text: #93c5fd;
+  --theme-accent-soft: rgb(59 130 246 / 0.12);
+  --theme-accent-border: rgb(59 130 246 / 0.42);
+  --theme-gradient-from: #3b82f6;
+  --theme-gradient-to: #06b6d4;
+  --theme-shadow: 0 0 24px rgb(59 130 246 / 0.35);
+}
+
+[data-theme="indigo"] {
+  --theme-accent: #6366f1;
+  --theme-accent-hover: #818cf8;
+  --theme-accent-text: #a5b4fc;
+  --theme-accent-soft: rgb(99 102 241 / 0.12);
+  --theme-accent-border: rgb(99 102 241 / 0.42);
+  --theme-gradient-from: #6366f1;
+  --theme-gradient-to: #a855f7;
+  --theme-shadow: 0 0 24px rgb(124 58 237 / 0.35);
+}
+
+[data-theme="purple"] {
+  --theme-accent: #a855f7;
+  --theme-accent-hover: #c084fc;
+  --theme-accent-text: #d8b4fe;
+  --theme-accent-soft: rgb(168 85 247 / 0.12);
+  --theme-accent-border: rgb(168 85 247 / 0.42);
+  --theme-gradient-from: #a855f7;
+  --theme-gradient-to: #ec4899;
+  --theme-shadow: 0 0 24px rgb(168 85 247 / 0.35);
+}
+
+.theme-gradient {
+  background: linear-gradient(135deg, var(--theme-gradient-from), var(--theme-gradient-to));
+}
+
+.theme-shadow {
+  box-shadow: var(--theme-shadow);
+}
+
+.theme-text {
+  color: var(--theme-accent-text);
+}
+
+.theme-border {
+  border-color: var(--theme-accent-border);
+}
+
+.theme-soft-bg {
+  background-color: var(--theme-accent-soft);
+}
+
+.theme-focus:focus {
+  border-color: var(--theme-accent-border);
+}
+
+.theme-tab-active {
+  border-color: var(--theme-accent-hover);
+  color: var(--theme-accent-text);
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
