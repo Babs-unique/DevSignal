@@ -9,9 +9,14 @@ import {
 } from 'lucide-react'
 import { useNavigate , Link , Outlet } from 'react-router-dom'
 import { MobileNavbar } from './MobileNavbar'
-
+import { useMeQuery } from '@/feature/authSlice'
 export const DashboardLayout = () => {
     const [isLogoutOpen, setIsLogoutOpen] = useState<boolean>(false);
+    const { data } = useMeQuery();
+
+
+    const formatName = data?.name.split(' ') || [];
+    const name = formatName[0]?.toUpperCase() + formatName.slice(1).join("");
 
     const navigate = useNavigate();
     const openLogoutButton = () => {
@@ -65,7 +70,7 @@ export const DashboardLayout = () => {
                     <div className='flex items-center gap-2'>
                         <img src="https://avatars.githubusercontent.com/u/12345678?v=4" alt="User Avatar" className='w-8 h-8 rounded-full' />
                         <div className='flex flex-col'>
-                            <span className='text-sm text-gray-700'>John Doe</span>
+                            <span className='text-sm text-gray-700'>{name}</span>
                             <span>Pro plan</span>
                         </div>
                     </div>
@@ -86,7 +91,7 @@ export const DashboardLayout = () => {
                     </div>
                 </aside>
                 <main className='p-4 flex-1 overflow-y-scroll h-full'>
-                    <Outlet />
+                    <Outlet  context={data}/>
                 </main>     
             </div>
   )

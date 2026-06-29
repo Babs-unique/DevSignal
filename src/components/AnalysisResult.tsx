@@ -20,6 +20,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { SiJavascript, SiReact, SiTailwindcss } from 'react-icons/si'
+import type { Analysis } from '@/feature/dashboardSlice'
 
 const skillGapData = [
   { skill: 'React', yourSkills: 88, required: 82 },
@@ -93,7 +94,13 @@ const recommendedActions = [
   },
 ]
 
-export const AnalysisResult = () => {
+type AnalysesResult = {
+  data: Analysis
+}
+
+export const AnalysisResult = ({
+  data
+}: AnalysesResult) => {
   return (
     <div className="min-h-screen bg-[#030306] text-white">
       <header className="flex flex-col gap-4 border-b border-white/10 px-4 py-5 sm:flex-row sm:items-center sm:justify-between md:px-8">

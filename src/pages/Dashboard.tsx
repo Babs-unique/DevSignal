@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   WandSparkles
 } from 'lucide-react'
@@ -9,6 +8,7 @@ import { Stats } from '../components/stats'
 import { useGetDashboardQuery } from '@/feature/dashboardSlice'
 export const Dashboard = () => {
   const { data, isLoading } = useGetDashboardQuery()
+  console.log(data)
   return (
     <div className='min-h-screen bg-[#030306] text-white'>
       <header className='flex flex-col gap-4 border-b border-white/10 px-4 py-5 sm:flex-row sm:items-center sm:justify-between md:px-8'>

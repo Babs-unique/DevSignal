@@ -1,21 +1,37 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { CloudUpload, FileText, Shield, WandSparkles } from 'lucide-react'
 
 type NewAnalysisFormProps = {
-  onStartAnalysis?: () => void
+  file?: File | null
+  setFile?: (file: File) => void
+  setJobDescription?: (jobDescription: string) => void
+  setRoleTitle?: (roleTitle: string) => void
+  setCompanyName?: (companyName: string) => void
+  setPersonalNotes?: (personalNotes: string) => void
+  handleSubmit?: () => void
+  jobDescription: string
 }
 
-export const NewAnalysisForm = ({ onStartAnalysis }: NewAnalysisFormProps) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [jobDescription, setJobDescription] = useState('')
+export const NewAnalysisForm = ({ 
+  file,
+  setFile,
+  setJobDescription,
+  setRoleTitle,
+  setCompanyName,
+  setPersonalNotes,
+  jobDescription = '',
+  handleSubmit
+
+ }: NewAnalysisFormProps) => {
+/*   const [selectedFile, setSelectedFile] = useState<File | null>(null) */
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
       const file = acceptedFiles[0] ?? null;
-      if(file){
-        setSelectedFile(file)
+      if(file && setFile){
+        setFile(file)
       }
-  }, [])
+  }, [setFile])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -31,6 +47,7 @@ export const NewAnalysisForm = ({ onStartAnalysis }: NewAnalysisFormProps) => {
   })
 
   return (
+    
     <section className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-8 shadow-[0_0_70px_rgba(124,58,237,0.06)]">
       <div>
         <div className="mb-5 flex items-center gap-3">
@@ -55,7 +72,7 @@ export const NewAnalysisForm = ({ onStartAnalysis }: NewAnalysisFormProps) => {
             <CloudUpload className="h-7 w-7" />
           </span>
           <p className="text-lg font-semibold text-white">
-            {selectedFile ? selectedFile.name : 'Drag & drop your resume here'}
+            {file ? file.name : 'Drag & drop your resume here'}
           </p>
           <p className="mt-2 text-sm text-gray-400">
             or click to browse from your computer
@@ -99,7 +116,7 @@ export const NewAnalysisForm = ({ onStartAnalysis }: NewAnalysisFormProps) => {
             <textarea
               id="job-description"
               value={jobDescription}
-              onChange={(event) => setJobDescription(event.target.value)}
+              onChange={(event) => setJobDescription?.(event.target.value)}
               placeholder={`Paste the full job description here...
 
 Requirements:
@@ -110,7 +127,7 @@ Requirements:
             />
             <div className="mt-3 flex items-center justify-between gap-4 text-xs text-gray-500">
               <p>Minimum 100 characters required for accurate analysis.</p>
-              <p>{jobDescription.length} / 5000</p>
+              <p>{jobDescription?.length} / 5000</p>
             </div>
           </div>
 
@@ -126,6 +143,7 @@ Requirements:
                 id="target-role"
                 type="text"
                 placeholder="e.g. Senior Frontend Engineer"
+                onChange={(e) => setRoleTitle?.(e.target.value)}
                 className="h-[43px] w-full rounded-lg border border-white/10 bg-[#111116] px-4 text-sm text-gray-200 outline-none transition placeholder:text-gray-500 focus:border-indigo-400/60"
               />
             </div>
@@ -141,6 +159,7 @@ Requirements:
                 id="company-name"
                 type="text"
                 placeholder="e.g. Stripe, Acme Corp"
+                onChange={(e) => setCompanyName?.(e.target.value)}
                 className="h-[43px] w-full rounded-lg border border-white/10 bg-[#111116] px-4 text-sm text-gray-200 outline-none transition placeholder:text-gray-500 focus:border-indigo-400/60"
               />
             </div>
@@ -156,6 +175,7 @@ Requirements:
                 id="personal-notes"
                 placeholder="Any specific areas you want to focus on?"
                 className="min-h-20 w-full resize-none rounded-lg border border-white/10 bg-[#111116] px-4 py-4 text-sm text-gray-200 outline-none transition placeholder:text-gray-500 focus:border-indigo-400/60"
+                onChange={(e) => setPersonalNotes?.(e.target.value)}
               />
             </div>
           </div>
@@ -175,8 +195,8 @@ Requirements:
             Cancel
           </button>
           <button
-            type="button"
-            onClick={onStartAnalysis}
+            type="submit"
+            onClick={handleSubmit }
             className="flex items-center gap-2 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 px-7 py-3 text-sm font-semibold text-white shadow-[0_0_24px_rgba(124,58,237,0.35)] transition hover:from-indigo-400 hover:to-purple-500"
           >
             <WandSparkles className="h-4 w-4" />
