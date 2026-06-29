@@ -4,6 +4,7 @@ import { NewAnalysisForm } from '../components/NewAnalysisForm'
 import { AnalysisResult } from '@/components/AnalysisResult'
 import { toast } from 'react-toastify'
 import { useAnalysesMutation } from '@/feature/analysisSlice'
+import type { MutationActionCreatorResult } from '@reduxjs/toolkit/query'
 
 
 export const AnalysisPage = () => {
@@ -14,7 +15,9 @@ export const AnalysisPage = () => {
   const [ roleTitle , setRoleTitle ] = useState('')
   const [ companyName , setCompanyName ] = useState('')
   const [ personalNotes , setPersonalNotes ] = useState('')
-  const [ newAnalysisData , {isLoading , error} ] = useAnalysesMutation()
+  const [ newAnalysisData , {isLoading , error , reset} ] = useAnalysesMutation()
+  type AnalysisRequest = ReturnType<typeof newAnalysisData>
+  const [analysisRequest, setAnalysisRequest] = useState<MutationActionCreatorResult<AnalysisRequest> | null>(null)
 
   console.log(analysesData)
   const handleSubmit = async () => {
@@ -39,7 +42,24 @@ export const AnalysisPage = () => {
       toast.error('Failed to create analysis')
     }
   }
+  const handleNewAnalysis = () => {
+  reset();
 
+  setAnalysesData(null);
+  setFile(null);
+  setJobDescription('');
+  setRoleTitle('');
+  setCompanyName('');
+  setPersonalNotes('');
+};
+const handleCancelAnalysis = () => {
+  if(analysisRequest){
+    analysisRequest?.abort()
+  }
+  setAnalysisRequest(null)
+  setAnalysesData(null)
+
+}
   return (
     <div className='min-h-screen bg-[#030306] text-white'>
       <header className='flex flex-col gap-4 border-b border-white/10 px-4 py-5 sm:flex-row sm:items-center sm:justify-between md:px-8'>
@@ -55,19 +75,22 @@ export const AnalysisPage = () => {
         </div>
       </header>
       <main className='px-4 py-8 md:px-8'>
-        {isLoading && <AnalysisLoadingModal  onClose={() => {}}/>}
+        {isLoading && <AnalysisLoadingModal  onCancel={handleCancelAnalysis}/>}
         { analysesData && !isLoading ? (
-          <AnalysisResult data={analysesData} />
+          <AnalysisResult 
+            data={analysesData} 
+            onNewAnalysis={handleNewAnalysis}
+          />
         ) : (
-         <NewAnalysisForm 
-          file={file}
-          setFile={setFile}
-          setJobDescription={setJobDescription}
-          setRoleTitle={setRoleTitle}
-          setCompanyName={setCompanyName}
-          setPersonalNotes={setPersonalNotes}
-          handleSubmit={handleSubmit}
-          jobDescription = { jobDescription}
+          <NewAnalysisForm 
+            file={file}
+            setFile={setFile}
+            setJobDescription={setJobDescription}
+            setRoleTitle={setRoleTitle}
+            setCompanyName={setCompanyName}
+            setPersonalNotes={setPersonalNotes}
+            handleSubmit={handleSubmit}
+            jobDescription={jobDescription}
           />
         )}
       </main>

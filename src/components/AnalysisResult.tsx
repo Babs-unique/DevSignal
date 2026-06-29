@@ -96,10 +96,12 @@ const recommendedActions = [
 
 type AnalysesResult = {
   data: Analysis
+  onNewAnalysis: () => void;
 }
 
 export const AnalysisResult = ({
-  data
+  data,
+  onNewAnalysis
 }: AnalysesResult) => {
   return (
     <div className="min-h-screen bg-[#030306] text-white">
@@ -120,7 +122,9 @@ export const AnalysisResult = ({
             <Edit className="h-4 w-4" />
             Edit & Re-run
           </button>
-          <button className="flex items-center gap-2 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(124,58,237,0.35)] transition hover:from-indigo-400 hover:to-purple-500">
+          <button className="flex items-center gap-2 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(124,58,237,0.35)] transition hover:from-indigo-400 hover:to-purple-500"
+          onClick={onNewAnalysis}
+          >
             <Plus className="h-4 w-4" />
             New Analysis
           </button>
