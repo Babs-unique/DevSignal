@@ -9,51 +9,58 @@ import {
 } from 'recharts'
 import type { DashboardResponse } from '@/feature/dashboardSlice'
 
-const skillData = [
-  { skill: 'React/Vue', profile: 86, required: 82 },
-  { skill: 'Node.js', profile: 72, required: 64 },
-  { skill: 'CSS/Tailwind', profile: 88, required: 78 },
-  { skill: 'AWS/Cloud', profile: 40, required: 62 },
-  { skill: 'TypeScript', profile: 80, required: 88 },
-  { skill: 'Docker', profile: 36, required: 48 },
-]
-
-const nextSteps = [
-  {
-    title: 'Rewrite Summary Section',
-    description:
-      'Incorporate more leadership keywords like "mentored", "architected", and...',
-    icon: PenTool,
-    iconStyle: { transform: 'rotate(180deg)' },
-    iconClassName: 'bg-indigo-500/10 text-indigo-400',
-  },
-  {
-    title: 'Take AWS Course',
-    description:
-      'Your target role requires AWS experience. Complete a basic...',
-    icon: GraduationCap,
-    iconClassName: 'bg-purple-500/10 text-purple-400',
-  },
-  {
-    title: 'Quantify Achievements',
-    description:
-      'Add metrics to 3 bullet points in your recent experience section.',
-    icon: ListChecks,
-    iconClassName: 'bg-blue-500/10 text-blue-400',
-  },
-]
-
-type SkillInsightsType = { 
-  data: DashboardResponse | undefined,
+type SkillInsightsType = {
+  data: DashboardResponse | undefined
   isLoading: boolean
 }
 
-export const DashboardSkillInsights = (
-  {
-    data,
-    isLoading
-  }: SkillInsightsType
-) => {
+const getStepIcon = (category: string) => {
+  const normalized = category.toLowerCase()
+
+  if (normalized.includes('resume') || normalized.includes('summary')) {
+    return PenTool
+  }
+
+  if (normalized.includes('skill') || normalized.includes('learning')) {
+    return GraduationCap
+  }
+
+  return ListChecks
+}
+
+const getStepIconClassName = (category: string) => {
+  const normalized = category.toLowerCase()
+
+  if (normalized.includes('resume') || normalized.includes('summary')) {
+    return 'bg-indigo-500/10 text-indigo-400'
+  }
+
+  if (normalized.includes('skill') || normalized.includes('learning')) {
+    return 'bg-purple-500/10 text-purple-400'
+  }
+
+  return 'bg-blue-500/10 text-blue-400'
+}
+
+const getStepIconStyle = (category: string) => {
+  const normalized = category.toLowerCase()
+
+  if (normalized.includes('resume') || normalized.includes('summary')) {
+    return { transform: 'rotate(180deg)' }
+  }
+
+  return undefined
+}
+
+export const DashboardSkillInsights = ({ data, isLoading }: SkillInsightsType) => {
+  const radarData = (data?.latestMetric?.radarChartData ?? []).map((item) => ({
+    skill: item.skill,
+    profile: item.userScore,
+    required: item.marketExpectedScore,
+  }))
+
+  const recommendations = data?.latestMetric?.recommendationActions ?? []
+
   return (
     <section className="grid gap-6 xl:grid-cols-[1fr_357px]">
       <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
@@ -75,37 +82,44 @@ export const DashboardSkillInsights = (
         </div>
 
         <div className="h-[300px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <RadarChart data={skillData} outerRadius="75%">
-              <PolarGrid stroke="#27272f" radialLines />
-              <PolarAngleAxis
-                dataKey="skill"
-                tick={{ fill: '#a1a1aa', fontSize: 12 }}
-              />
-              <PolarRadiusAxis
-                angle={90}
-                domain={[0, 100]}
-                tick={{ fill: '#71717a', fontSize: 12 }}
-                tickCount={6}
-                axisLine={false}
-              />
-              <Radar
-                dataKey="required"
-                stroke="#4b5563"
-                fill="#4b5563"
-                fillOpacity={0.08}
-                strokeDasharray="7 7"
-                strokeWidth={2}
-              />
-              <Radar
-                dataKey="profile"
-                stroke="#6f79ff"
-                fill="#6f79ff"
-                fillOpacity={0.18}
-                strokeWidth={2}
-              />
-            </RadarChart>
-          </ResponsiveContainer>
+          {isLoading ? (
+            <div className="flex h-full items-center justify-center text-sm text-gray-400">
+              Loading skill insights...
+            </div>
+          ) : radarData.length > 0 ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart data={radarData} outerRadius="75%">
+                <PolarGrid stroke="#27272f" radialLines />
+                <PolarAngleAxis dataKey="skill" tick={{ fill: '#a1a1aa', fontSize: 12 }} />
+                <PolarRadiusAxis
+                  angle={90}
+                  domain={[0, 100]}
+                  tick={{ fill: '#71717a', fontSize: 12 }}
+                  tickCount={6}
+                  axisLine={false}
+                />
+                <Radar
+                  dataKey="required"
+                  stroke="#4b5563"
+                  fill="#4b5563"
+                  fillOpacity={0.08}
+                  strokeDasharray="7 7"
+                  strokeWidth={2}
+                />
+                <Radar
+                  dataKey="profile"
+                  stroke="#6f79ff"
+                  fill="#6f79ff"
+                  fillOpacity={0.18}
+                  strokeWidth={2}
+                />
+              </RadarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex h-full items-center justify-center text-sm text-gray-400">
+              No skill insights yet. Run a new analysis to populate this view.
+            </div>
+          )}
         </div>
       </div>
 
@@ -115,30 +129,34 @@ export const DashboardSkillInsights = (
         </p>
 
         <div className="space-y-4">
-          {nextSteps.map((step) => {
-            const Icon = step.icon
+          {isLoading ? (
+            <p className="text-sm text-gray-400">Loading recommendations...</p>
+          ) : recommendations.length > 0 ? (
+            recommendations.map((step) => {
+              const Icon = getStepIcon(step.category)
 
-            return (
-              <div
-                key={step.title}
-                className="flex gap-4 rounded-xl border border-white/10 bg-white/[0.01] p-4"
-              >
-                <span
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${step.iconClassName}`}
+              return (
+                <div
+                  key={step.title}
+                  className="flex gap-4 rounded-xl border border-white/10 bg-white/[0.01] p-4"
                 >
-                  <Icon className="h-4 w-4" style={step.iconStyle} />
-                </span>
-                <div className="min-w-0">
-                  <h3 className="text-sm font-semibold text-gray-100">
-                    {step.title}
-                  </h3>
-                  <p className="mt-1 line-clamp-2 text-xs leading-5 text-gray-500">
-                    {step.description}
-                  </p>
+                  <span
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${getStepIconClassName(step.category)}`}
+                  >
+                    <Icon className="h-4 w-4" style={getStepIconStyle(step.category)} />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-semibold text-gray-100">{step.title}</h3>
+                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-gray-500">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })
+          ) : (
+            <p className="text-sm text-gray-400">No recommendations available yet.</p>
+          )}
         </div>
       </div>
     </section>

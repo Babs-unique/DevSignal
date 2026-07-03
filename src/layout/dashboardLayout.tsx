@@ -9,23 +9,28 @@ import {
 } from 'lucide-react'
 import { useNavigate , Link , Outlet } from 'react-router-dom'
 import { MobileNavbar } from './MobileNavbar'
-import { useMeQuery } from '@/feature/authSlice'
+import { useMeQuery, useLogoutMutation } from '@/feature/authSlice'
 export const DashboardLayout = () => {
     const [isLogoutOpen, setIsLogoutOpen] = useState<boolean>(false);
     const { data } = useMeQuery();
+    const [logout] = useLogoutMutation();
 
-
-    const formatName = data?.name.split(' ') || [];
-    const name = formatName[0]?.toUpperCase() + formatName.slice(1).join("");
+    const firstName = data?.name?.split(' ')[0] ?? 'User';
+    const name = firstName ? firstName.charAt(0).toUpperCase() + firstName.slice(1) : 'User';
 
     const navigate = useNavigate();
     const openLogoutButton = () => {
-        setIsLogoutOpen(
-            prev => !prev
-        );
+        setIsLogoutOpen(prev => !prev);
     }
-    const handleLogout = () => {
-        navigate('/')
+    const handleLogout = async () => {
+        try {
+            await logout().unwrap();
+        } catch (error) {
+            console.error('Logout failed', error);
+        } finally {
+            setIsLogoutOpen(false);
+            navigate('/login');
+        }
     }
     const menuItems = [
     { name: 'Dashboard', icon: <ChartLine />, path: '' },
@@ -34,7 +39,13 @@ export const DashboardLayout = () => {
     ]
   return (
     <div className='md:flex h-screen bg-[#000] text-white overflow-hidden'>
-        <MobileNavbar openLogoutButton={openLogoutButton} handleLogout={handleLogout} isLogoutOpen={isLogoutOpen} />
+        <MobileNavbar
+            openLogoutButton={openLogoutButton}
+            handleLogout={handleLogout}
+            isLogoutOpen={isLogoutOpen}
+            userName={name}
+            avatarUrl={data?.avatarUrl}
+        />
         <aside className='w-64 h-screen border-r border-gray-950 md:flex md:flex-col md:justify-between text-white bg-[#0303069a]  hidden'>
             <div className='flex flex-col gap-4'>
                <Link to='/dashboard' className="flex justify-left items-center align-middle border-b border-gray-900 p-4 gap-4 cursor-pointer">
@@ -64,31 +75,29 @@ export const DashboardLayout = () => {
                 </div>
             </nav>
             </div>
-            <div className='p-4 border-t border-gray-900 flex justify-between'>
+            <div className='p-4 border-t border-gray-900'>
                 {/*User profile and logout*/}
-                <div>
+                <div className='flex items-center justify-between gap-4'>
                     <div className='flex items-center gap-2'>
-                        <img src="https://avatars.githubusercontent.com/u/12345678?v=4" alt="User Avatar" className='w-8 h-8 rounded-full' />
+                        <img src={data?.avatarUrl || 'https://avatars.githubusercontent.com/u/12345678?v=4'} alt='User Avatar' className='w-8 h-8 rounded-full' />
                         <div className='flex flex-col'>
-                            <span className='text-sm text-gray-700'>{name}</span>
-                            <span>Pro plan</span>
+                            <span className='text-sm text-gray-200'>{name}</span>
+                            <span className='text-xs text-gray-500'>Pro plan</span>
                         </div>
                     </div>
-                </div>
-                    <div className='flex '>
-                    <button className='flex items-center gap-2 text-gray-500 hover:text-gray-700 ' onClick={openLogoutButton}>
-                        <ChevronUp />
+                    <button className='flex items-center gap-2 text-gray-400 hover:text-white transition' onClick={openLogoutButton}>
+                        <ChevronUp className={`${isLogoutOpen ? 'rotate-180' : ''} transition-transform`} />
                     </button>
-                    {/* Logout button, initially hidden */}
-                    {isLogoutOpen && (
-                        <div id="logoutButton" className='mt-2 block left-0'>
-                        <button className='w-full text-left text-gray-500 hover:text-gray-700 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded'
-                            onClick={handleLogout}
-                        >Logout</button>
-                        </div>
-                    )}
                 </div>
-                    </div>
+                {isLogoutOpen && (
+                    <button
+                        className='mt-3 w-full rounded-lg bg-red-600 px-3 py-2 text-left text-white hover:bg-red-700 transition'
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </button>
+                )}
+            </div>
                 </aside>
                 <main className='p-4 flex-1 overflow-y-scroll h-full'>
                     <Outlet  context={data}/>

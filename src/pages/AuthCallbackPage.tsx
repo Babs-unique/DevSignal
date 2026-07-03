@@ -15,7 +15,6 @@ export function AuthCallbackPage() {
     // Fetch user profile immediately on landing
     const { 
         data: user, 
-        isLoading, 
         isSuccess, 
         isError, 
         error: fetchError 

@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
         children: [
             {index: true, element: <Dashboard/>},
             {path: 'analysis',  element : <AnalysisPage/>},
-            {path: 'analysis-details',  element : <AnalysisDetails/>},
+            {path: 'analysis-details/:id',  element : <AnalysisDetails/>},
             {path: 'history',  element: <HistoryPage/>},
             {path: 'settings' , element : <SettingsPage/>}
 

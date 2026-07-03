@@ -45,8 +45,15 @@ const authSlice = api.injectEndpoints({
                 method: "GET",
             }),
             transformResponse: (response: MeResponse) => response.data.user,
-        })
+        }),
+        deleteAccount: builder.mutation<void, void>({
+            query: () => ({
+                url: "/api/v1/auth/delete",
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Auth", "User"],
+        }),
     })
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useMeQuery } = authSlice;
+export const { useLoginMutation, useRegisterMutation, useLogoutMutation, useMeQuery, useDeleteAccountMutation } = authSlice;

@@ -1,67 +1,49 @@
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-import { FaAmazon } from 'react-icons/fa'
-import { SiDocker, SiMongodb } from 'react-icons/si'
-import type { DashboardResponse} from '@/feature/dashboardSlice'
+import type { DashboardResponse } from '@/feature/dashboardSlice'
 
-const skills = [
-  {
-    name: 'AWS CloudFront',
-    logo: <FaAmazon size={16} />,
-    priority: 'High Priority',
-    accent: 'border-amber-500/35 bg-amber-500/10 text-amber-400',
-  },
-  {
-    name: 'Docker Swarm',
-    logo: <SiDocker size={16} />,
-    priority: 'Medium',
-    accent: 'border-blue-500/35 bg-blue-500/10 text-blue-400',
-  },
-  {
-    name: 'MongoDB Aggregations',
-    logo: <SiMongodb size={16} />,
-    priority: 'Low',
-    accent: 'border-emerald-500/35 bg-emerald-500/10 text-emerald-400',
-  },
-]
-
-const analysis = [
-  {
-    title: 'Keywords Matched',
-    value: (
-      <>
-        <span>42</span>
-        <span className="text-base font-medium text-gray-500">/50</span>
-      </>
-    ),
-    valueClassName: 'text-white',
-  },
-  {
-    title: 'Experience Level',
-    value: 'Match',
-    valueClassName: 'text-white',
-  },
-  {
-    title: 'Format Score',
-    value: '95%',
-    valueClassName: 'text-emerald-400',
-  },
-  {
-    title: 'Impact Words',
-    value: 'Needs Work',
-    valueClassName: 'text-yellow-400',
-  },
-]
-
-type statsType = { 
-  data: DashboardResponse | undefined,
+type statsType = {
+  data: DashboardResponse | undefined
   isLoading: boolean
 }
 
-export const Stats = ({
-  data,
-  isLoding
-} : statsType)  => {
+const getScoreLabel = (score: number) => {
+  if (score >= 85) return 'Excellent'
+  if (score >= 70) return 'Strong'
+  if (score >= 50) return 'Needs Work'
+  return 'Improving'
+}
+
+export const Stats = ({ data, isLoading }: statsType) => {
+  const latestMetric = data?.latestMetric
+  const overallScore = latestMetric?.matchScore ?? 0
+  const missingSkills = latestMetric?.missingSkills ?? []
+  const analysisSummary = latestMetric?.analysisSummary
+  const keywordAnalysis = latestMetric?.keywordAnalysis
+
+  const summaryCards = [
+    {
+      title: 'Keywords Matched',
+      value: `${keywordAnalysis?.matchedKeywords?.length ?? 0}/${(keywordAnalysis?.matchedKeywords?.length ?? 0) + (keywordAnalysis?.missingKeywords?.length ?? 0)}`,
+      valueClassName: 'text-white',
+    },
+    {
+      title: 'Market Readiness',
+      value: analysisSummary?.marketReadiness ?? 'Pending',
+      valueClassName: 'text-cyan-400',
+    },
+    {
+      title: 'Hiring Likelihood',
+      value: analysisSummary?.hiringLikelihood ?? 'Pending',
+      valueClassName: 'text-emerald-400',
+    },
+    {
+      title: 'Overall Assessment',
+      value: analysisSummary?.overallAssessment ?? 'Pending',
+      valueClassName: 'text-yellow-400',
+    },
+  ]
+
   return (
     <section className="grid gap-6 xl:grid-cols-[minmax(300px,357px)_1fr]">
       <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6 shadow-[0_0_60px_rgba(124,58,237,0.08)]">
@@ -70,14 +52,14 @@ export const Stats = ({
             Overall Match Score
           </p>
           <span className="rounded-md border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-400">
-            Excellent
+            {isLoading ? 'Loading' : getScoreLabel(overallScore)}
           </span>
         </div>
 
         <div className="mx-auto h-40 w-40 sm:h-44 sm:w-44">
           <CircularProgressbar
-            value={87}
-            text="87%"
+            value={overallScore}
+            text={`${overallScore}%`}
             strokeWidth={8}
             styles={buildStyles({
               pathColor: '#8b5cf6',
@@ -90,7 +72,7 @@ export const Stats = ({
         </div>
 
         <p className="mx-auto mt-7 max-w-[250px] text-center text-sm leading-6 text-gray-400">
-          Based on your latest resume vs. Senior Frontend Developer role.
+          {latestMetric ? `Based on your latest resume versus ${latestMetric.roleTitle || 'the selected role'}.` : 'Run a new analysis to see your latest match score.'}
         </p>
       </div>
 
@@ -101,26 +83,21 @@ export const Stats = ({
           </p>
 
           <div className="space-y-4">
-            {skills.map((skill) => (
-              <div
-                key={skill.name}
-                className="grid grid-cols-[1fr_auto] items-center gap-5"
-              >
-                <div className="flex min-w-0 items-center gap-3">
-                  <span
-                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded border ${skill.accent}`}
-                  >
-                    {skill.logo}
-                  </span>
-                  <p className="truncate text-sm font-medium text-gray-200">
-                    {skill.name}
-                  </p>
+            {isLoading ? (
+              <p className="text-sm text-gray-400">Loading missing skills...</p>
+            ) : missingSkills.length > 0 ? (
+              missingSkills.slice(0, 3).map((skill) => (
+                <div key={skill.skill} className="grid grid-cols-[1fr_auto] items-center gap-5">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-gray-200">{skill.skill}</p>
+                    <p className="mt-1 text-xs text-gray-500">{skill.category}</p>
+                  </div>
+                  <p className="text-right font-mono text-xs text-gray-500">{skill.importance}</p>
                 </div>
-                <p className="text-right font-mono text-xs text-gray-500">
-                  {skill.priority}
-                </p>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-sm text-gray-400">No missing skills recorded yet.</p>
+            )}
           </div>
 
           <button className="mt-auto w-fit pt-8 text-sm font-medium text-indigo-400 transition hover:text-indigo-300">
@@ -136,15 +113,10 @@ export const Stats = ({
           </p>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            {analysis.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-lg border border-white/10 bg-white/[0.01] p-4"
-              >
+            {summaryCards.map((item) => (
+              <div key={item.title} className="rounded-lg border border-white/10 bg-white/[0.01] p-4">
                 <p className="text-xs text-gray-500">{item.title}</p>
-                <p className={`mt-2 text-xl font-bold ${item.valueClassName}`}>
-                  {item.value}
-                </p>
+                <p className={`mt-2 text-xl font-bold ${item.valueClassName}`}>{item.value}</p>
               </div>
             ))}
           </div>

@@ -1,8 +1,13 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { BillingSettings } from '../components/BillingSettings'
 import { NotificationSettings } from '../components/NotificationSettings'
 import { GeneralSettings } from '../components/GeneralSettings'
+import { DeleteAccountModal } from '../components/DeleteAccountModal'
 import { Check } from 'lucide-react'
+import { toast } from 'react-toastify'
+import { useGetSettingsQuery } from '@/feature/settingsSlice'
+import { useDeleteAccountMutation } from '@/feature/authSlice'
 
 const settingsNavigation = ['General', 'Billing', 'Notifications'] as const
 
@@ -10,6 +15,22 @@ type SettingsTab = (typeof settingsNavigation)[number]
 
 export const SettingsPage = () => {
   const [activeTab, setActiveTab] = useState<SettingsTab>('General')
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const navigate = useNavigate()
+  const { data: user, isLoading } = useGetSettingsQuery()
+  const [deleteAccount, { isLoading: isDeleting }] = useDeleteAccountMutation()
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccount().unwrap()
+      toast.success('Account deletion requested. You will be signed out.')
+      setShowDeleteModal(false)
+      navigate('/login')
+    } catch (error) {
+      console.error('Delete account error', error)
+      toast.error('Unable to delete your account. Please try again.')
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#030306] text-white">
@@ -48,10 +69,25 @@ export const SettingsPage = () => {
           ))}
         </nav>
 
-        {activeTab === 'General' && <GeneralSettings />}
+        {activeTab === 'General' && (
+          <GeneralSettings
+            user={user}
+            isLoading={isLoading}
+            onDelete={() => setShowDeleteModal(true)}
+            isDeleting={isDeleting}
+          />
+        )}
         {activeTab === 'Billing' && <BillingSettings />}
         {activeTab === 'Notifications' && <NotificationSettings />}
       </main>
+
+      {showDeleteModal && (
+        <DeleteAccountModal
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={handleDeleteAccount}
+          isDeleting={isDeleting}
+        />
+      )}
     </div>
   )
 }

@@ -14,15 +14,17 @@ interface ButtonProps {
     openLogoutButton: () => void;
     handleLogout: () => void;
     isLogoutOpen: boolean;
+    userName?: string;
+    avatarUrl?: string | null;
 } 
 
-export const  MobileNavbar = ({ openLogoutButton, handleLogout, isLogoutOpen }: ButtonProps ) => {
+export const MobileNavbar = ({ openLogoutButton, handleLogout, isLogoutOpen, userName = 'User', avatarUrl }: ButtonProps ) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-      const menuItems = [
+  const menuItems = [
       { name: 'Dashboard', icon: <ChartLine />, path: '' },
       { name: 'New Analysis', icon: <Plus />, path: 'analysis' },
       { name: 'History', icon: <History />, path: 'history' }
-      ]
+  ]
 
   return (
     <>
@@ -77,7 +79,8 @@ export const  MobileNavbar = ({ openLogoutButton, handleLogout, isLogoutOpen }: 
                     menuItems.map((item) => {
                         const Icons = item.icon
                         return (
-                            <Link to={item.path} key={item.name} className='flex items-center gap-4 text-gray-500 hover:text-white hover:bg-gray-900 hover:border-l-2 hover:border-[#7C3AED]  hover:p-2 hover:rounded-md'>
+                            <Link to={item.path} key={item.name} className='flex items-center gap-4 text-gray-500 hover:text-white hover:bg-gray-900 hover:border-l-2 hover:border-[#7C3AED] hover:p-2 hover:rounded-md'
+                                  onClick={() => setIsOpen(false)}>
                                 {Icons}
                                 {item.name}
                             </Link>
@@ -86,35 +89,30 @@ export const  MobileNavbar = ({ openLogoutButton, handleLogout, isLogoutOpen }: 
                 }
                 <div>
                     <p className='text-bold text-gray-500 text-sm my-5'>SYSTEM</p>
-                    <Link to='settings' className='flex items-center gap-4 text-gray-500 hover:text-gray-700 mt-2 hover:text-white hover:bg-gray-900 hover:border-l-2 hover:border-[#7C3AED]  hover:p-2 hover:rounded-md'>
+                    <Link to='settings' className='flex items-center gap-4 text-gray-500 hover:text-gray-700 mt-2 hover:text-white hover:bg-gray-900 hover:border-l-2 hover:border-[#7C3AED] hover:p-2 hover:rounded-md'
+                          onClick={() => setIsOpen(false)}>
                         <Settings />
                         Settings
                     </Link>
                 </div>
-               <div className='p-4 border-t border-gray-900 flex justify-between mt-auto'>
-                            {/*User profile and logout*/}
-                            <div>
-                                <div className='flex items-center gap-2'>
-                                    <img src="https://avatars.githubusercontent.com/u/12345678?v=4" alt="User Avatar" className='w-8 h-8 rounded-full' />
-                                    <div className='flex flex-col'>
-                                        <span className='text-sm text-gray-700'>John Doe</span>
-                                        <span>Pro plan</span>
-                                    </div>
-                                </div>
+               <div className='p-4 border-t border-gray-900 mt-auto'>
+                    <div className='flex items-center justify-between gap-4'>
+                        <div className='flex items-center gap-2'>
+                            <img src={avatarUrl || 'https://avatars.githubusercontent.com/u/12345678?v=4'} alt='User Avatar' className='w-8 h-8 rounded-full' />
+                            <div className='flex flex-col'>
+                                <span className='text-sm text-gray-200'>{userName}</span>
+                                <span className='text-xs text-gray-500'>Pro plan</span>
                             </div>
-                                <div className='flex '>
-                                <button className='flex items-center gap-2 text-gray-500 hover:text-gray-700 ' onClick={openLogoutButton}>
-                                    <ChevronUp />
-                                </button>
-                                {/* Logout button, initially hidden */}
-                                {isLogoutOpen && (
-                                    <div id="logoutButton" className='mt-2 block left-0'>
-                                    <button className='w-full text-left text-gray-500 hover:text-gray-700 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded'
-                                        onClick={handleLogout}
-                                    >Logout</button>
-                                    </div>
-                                )}
-                            </div>
+                        </div>
+                        <button className='flex items-center gap-2 text-gray-400 hover:text-white transition' onClick={openLogoutButton}>
+                            <ChevronUp className={`${isLogoutOpen ? 'rotate-180' : ''} transition-transform`} />
+                        </button>
+                    </div>
+                    {isLogoutOpen && (
+                        <button className='mt-4 w-full rounded-lg bg-red-600 px-4 py-2 text-left text-white hover:bg-red-700 transition' onClick={handleLogout}>
+                            Logout
+                        </button>
+                    )}
                 </div>
         </div>
       </div>

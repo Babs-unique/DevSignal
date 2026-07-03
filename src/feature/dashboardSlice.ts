@@ -1,51 +1,67 @@
 import { api } from '../api/api.ts';
 
 type AnalysisSummary = {
-    overall: string;
-    strengths: string[];
-    weaknesses: string[];
+    overallAssessment: string;
+    marketReadiness: string;
+    hiringLikelihood: string;
 };
 
+type ExistingSkill = {
+    skill: string;
+    level: 'Beginner' | 'Intermediate' | 'Advanced';
+    confidence: number;
+    category: string;
+};
 
-type Skill = string;
+type MissingSkill = {
+    skill: string;
+    importance: 'Nice to Have' | 'Recommended' | 'Important' | 'Critical';
+    category: string;
+    reason: string;
+};
 
+type RecommendationAction = {
+    title: string;
+    description: string;
+    category: string;
+    difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
+    estimatedTime: string;
+    careerImpact: 'Low Impact' | 'Medium Impact' | 'High Impact' | 'Very High Impact';
+};
 
 type KeywordAnalysis = {
     matchedKeywords: string[];
     missingKeywords: string[];
-    keywordMatchPercentage: number;
 };
-
 
 type ResumeFeedback = {
-    formatting: string;
-    content: string;
-    suggestions: string[];
+    strengths: string[];
+    weaknesses: string[];
 };
-
 
 type RadarChartData = {
     skill: string;
-    value: number;
+    userScore: number;
+    marketExpectedScore: number;
 };
-
 
 export type Analysis = {
     _id: string;
     user: string;
     roleTitle: string;
-    resumeFileName: string;
+    companyName?: string;
+    resumeFileName?: string;
     resumeText: string;
     jobDescription: string;
     matchScore: number;
 
     analysisSummary: AnalysisSummary;
 
-    existingSkills: Skill[];
+    existingSkills: ExistingSkill[];
 
-    missingSkills: Skill[];
+    missingSkills: MissingSkill[];
 
-    recommendationActions: string[];
+    recommendationActions: RecommendationAction[];
 
     keywordAnalysis: KeywordAnalysis;
 
@@ -61,15 +77,9 @@ export type Analysis = {
 
 
 export type DashboardResponse = {
-    lastMetric: {
-        totalAnalyses: number;
-        averageMatchScore: number;
-        latestScore: number;
-    };
-
+    latestMetric: Analysis | null;
     analyses: Analysis[];
 };
-
 
 const dashboardSlice = api.injectEndpoints({
     endpoints: (build) => ({
@@ -78,12 +88,14 @@ const dashboardSlice = api.injectEndpoints({
                 url: '/api/v1/dashboard',
                 method: 'GET',
             }),
+            transformResponse: (response: { data: DashboardResponse }) => response.data,
         }),
         getAnalysesById: build.query<Analysis, string>({
             query: (id) => ({
-                url: `/api/v1/analysis/${id}`,
+                url: `/api/v1/history/${id}`,
                 method: 'GET',
             }),
+            transformResponse: (response: { data: { analysis: Analysis } }) => response.data.analysis,
         }),
     }),
 });
