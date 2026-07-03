@@ -3,6 +3,7 @@ import {HomePage } from './HomePage'
 import LoginPage from './auth/login'
 import { SignupPage } from './auth/signUp'
 import ResetPasswordPage from './auth/reset'
+import { PasswordReset } from './components/PasswordReset'
 import { DashboardLayout } from './layout/dashboardLayout'
 import { Dashboard } from './pages/Dashboard'
 import { AnalysisPage } from './pages/AnalysisPage'
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
     {
         path: "/reset",
         element: <ResetPasswordPage />
+    },
+    {
+        path: "/reset-password",
+        element: <PasswordReset />
     },
     {
         path:"/auth/callback",
