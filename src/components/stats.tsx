@@ -71,7 +71,7 @@ export const Stats = ({ data, isLoading }: statsType) => {
           />
         </div>
 
-        <p className="mx-auto mt-7 max-w-[250px] text-center text-sm leading-6 text-gray-400">
+        <p className="mx-auto mt-7 max-w-[250px] text-center text-sm leading-6 text-gray-400 ">
           {latestMetric ? `Based on your latest resume versus ${latestMetric.roleTitle || 'the selected role'}.` : 'Run a new analysis to see your latest match score.'}
         </p>
       </div>
