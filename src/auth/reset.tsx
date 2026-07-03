@@ -10,7 +10,7 @@ export default function ResetPasswordPage() {
     e.preventDefault()
     try {
       await forgotPassword({ email }).unwrap()
-      toast.success('Password reset email sent successfully')
+      toast.success('If an account exists with this email, a reset link has been sent')
       setEmail('')
     } catch (e) {
       console.error('Forgot password error:', e)
