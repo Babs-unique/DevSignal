@@ -2,7 +2,8 @@ import heroImg from './assets/hero.png';
 import { ArrowRight, Cable, ChartPie, Code2, Cpu, Link2, Sparkles } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { FaDiscord, FaGithub, FaTwitter } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link} from 'react-router-dom';
+
 
 type Feature = {
   icon: LucideIcon;
@@ -106,13 +107,13 @@ export const HomePage = () => {
               />
             </label>
 
-            <button
-              type="button"
+            <Link
+              to='/login'
               className="inline-flex h-14 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#6356ff] to-[#a93af2] px-7 text-sm font-bold text-white shadow-[0_0_30px_rgba(132,74,255,0.35)] transition hover:brightness-110"
             >
               Analyze My Resume
               <ArrowRight size={18} />
-            </button>
+            </Link>
           </div>
 
           <p className="font-mono text-xs text-[#747886]">

@@ -99,7 +99,7 @@ export const DashboardLayout = () => {
                 )}
             </div>
                 </aside>
-                <main className='p-4 flex-1 overflow-y-scroll h-full'>
+                <main className='p-4 pb-20 flex-1 overflow-y-scroll h-full'>
                     <Outlet  context={data}/>
                 </main>     
             </div>
