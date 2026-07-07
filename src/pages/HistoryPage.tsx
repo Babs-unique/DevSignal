@@ -1,9 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type MouseEvent } from 'react'
+import { useDebounce } from 'use-debounce'
 import { Link } from 'react-router-dom'
 import {
   BarChart3,
-  ChevronDown,
-  ChevronLeft,
   ChevronRight,
   ClipboardList,
   Plus,
@@ -15,6 +14,14 @@ import {
   useGetHistoryMetricsQuery,
   useSearchHistoryQuery,
 } from '@/feature/historySlice'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '../../@/components/ui/pagination'
 
 const getScoreClassName = (score: number) => {
   if (score >= 80) {
@@ -37,23 +44,31 @@ const formatDate = (value: string) =>
 
 export const HistoryPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
-  const [scoreFilter] = useState(50)
-  const [dateFilter] = useState(30)
+  const [scoreFilter, setScoreFilter] = useState('')
+  const [dateFilter, setDateFilter] = useState('30')
+  const [page, setPage] = useState(1)
+  const [debouncedSearchTerm] = useDebounce(searchTerm, 400)
 
-  const shouldSearch = searchTerm.trim().length > 0
+  const shouldSearch = debouncedSearchTerm.trim().length > 0
 
   const { data: metrics } = useGetHistoryMetricsQuery()
-  const { data: historyItems = [], isLoading: isHistoryLoading } = useGetHistoryListQuery(
-    { page: 1, limit: 10 },
+  const { data: historyData, isLoading: isHistoryLoading } = useGetHistoryListQuery(
+    { page, limit: 10 },
     { skip: shouldSearch },
   )
-  const { data: searchResults = [], isLoading: isSearchLoading } = useSearchHistoryQuery(
-    { q: searchTerm, score: scoreFilter, date: dateFilter },
+  const { data: searchData, isLoading: isSearchLoading } = useSearchHistoryQuery(
+    { q: debouncedSearchTerm, score: scoreFilter ? Number(scoreFilter) : undefined, date: Number(dateFilter), page, limit: 10 },
     { skip: !shouldSearch },
   )
 
-  const items = useMemo(() => (shouldSearch ? searchResults : historyItems), [shouldSearch, searchResults, historyItems])
+  useEffect(() => {
+    setPage(1)
+  }, [debouncedSearchTerm, scoreFilter, dateFilter])
+
+  const items = useMemo(() => (shouldSearch ? searchData?.analyses ?? [] : historyData?.analyses ?? []), [shouldSearch, searchData, historyData])
   const isLoading = shouldSearch ? isSearchLoading : isHistoryLoading
+  const totalCount = shouldSearch ? searchData?.totalCount ?? 0 : historyData?.totalCount ?? 0
+  const totalPages = Math.max(1, Math.ceil(totalCount / 10))
 
   const analysisMetrics = [
     {
@@ -143,14 +158,26 @@ export const HistoryPage = () => {
             </label>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <button className="flex h-11 min-w-[178px] items-center justify-between gap-4 rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm text-gray-300 transition hover:bg-white/[0.04]">
-                All Scores
-                <ChevronDown className="h-4 w-4 text-gray-500" />
-              </button>
-              <button className="flex h-11 min-w-[152px] items-center justify-between gap-4 rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm text-gray-300 transition hover:bg-white/[0.04]">
-                Last 30 Days
-                <ChevronDown className="h-4 w-4 text-gray-500" />
-              </button>
+              <select
+                value={scoreFilter}
+                onChange={(event) => setScoreFilter(event.target.value)}
+                className="h-11 min-w-[178px] rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm text-gray-300 outline-none transition focus:border-indigo-500/60"
+              >
+                <option value="">All Scores</option>
+                <option value="60">60%+</option>
+                <option value="70">70%+</option>
+                <option value="80">80%+</option>
+                <option value="90">90%+</option>
+              </select>
+              <select
+                value={dateFilter}
+                onChange={(event) => setDateFilter(event.target.value)}
+                className="h-11 min-w-[152px] rounded-lg border border-white/10 bg-white/[0.02] px-4 text-sm text-gray-300 outline-none transition focus:border-indigo-500/60"
+              >
+                <option value="30">Last 30 Days</option>
+                <option value="60">Last 60 Days</option>
+                <option value="90">Last 90 Days</option>
+              </select>
             </div>
           </div>
         </section>
@@ -223,21 +250,52 @@ export const HistoryPage = () => {
 
           <div className="flex flex-col gap-4 border-t border-white/10 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="font-mono text-sm text-gray-500">
-              {!isLoading && items.length > 0 ? `Showing ${items.length} recent entries` : 'No results yet'}
+              {!isLoading && totalCount > 0 ? `Showing ${items.length} of ${totalCount} entries` : 'No results yet'}
             </p>
 
-            <div className="flex items-center gap-2">
-              <button className="flex h-8 w-8 items-center justify-center rounded-md border border-white/10 text-gray-600" aria-label="Previous page">
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button className="h-8 min-w-8 rounded-md border border-indigo-500/70 bg-indigo-500/20 px-3 font-mono text-sm text-indigo-200">1</button>
-              <button className="h-8 min-w-8 rounded-md border border-white/10 px-3 font-mono text-sm text-gray-400 transition hover:bg-white/[0.04]">2</button>
-              <button className="h-8 min-w-8 rounded-md border border-white/10 px-3 font-mono text-sm text-gray-400 transition hover:bg-white/[0.04]">3</button>
-              <span className="px-1 font-mono text-sm text-gray-500">...</span>
-              <button className="flex h-8 w-8 items-center justify-center rounded-md border border-white/10 text-gray-400 transition hover:bg-white/[0.04] hover:text-white" aria-label="Next page">
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
+            <Pagination className="mx-0 justify-end">
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href="#"
+                    onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+                      event.preventDefault()
+                      if (page > 1) {
+                        setPage((current) => Math.max(1, current - 1))
+                      }
+                    }}
+                    className="border border-white/10 bg-white/[0.02] text-gray-400 hover:bg-white/[0.04] hover:text-white"
+                  />
+                </PaginationItem>
+                {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      href="#"
+                      isActive={pageNumber === page}
+                      onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+                        event.preventDefault()
+                        setPage(pageNumber)
+                      }}
+                      className={pageNumber === page ? 'border-indigo-500/70 bg-indigo-500/20 text-indigo-200' : 'border border-white/10 bg-white/[0.02] text-gray-400 hover:bg-white/[0.04] hover:text-white'}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+                <PaginationItem>
+                  <PaginationNext
+                    href="#"
+                    onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+                      event.preventDefault()
+                      if (page < totalPages) {
+                        setPage((current) => Math.min(totalPages, current + 1))
+                      }
+                    }}
+                    className="border border-white/10 bg-white/[0.02] text-gray-400 hover:bg-white/[0.04] hover:text-white"
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </section>
       </main>

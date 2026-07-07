@@ -95,7 +95,7 @@ export const MobileNavbar = ({ openLogoutButton, handleLogout, isLogoutOpen, use
                         Settings
                     </Link>
                 </div>
-              <div className='p-4 border-t border-gray-900 my-18'>
+              <div className='p-2 border-t border-gray-900 my-18'>
                     <div className='flex items-center justify-between gap-4'>
                         <div className='flex items-center gap-2'>
                             <img src={avatarUrl || 'https://avatars.githubusercontent.com/u/12345678?v=4'} alt='User Avatar' className='w-8 h-8 rounded-full' />

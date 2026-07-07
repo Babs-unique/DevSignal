@@ -13,6 +13,9 @@ interface HistoryListResponse {
   success: boolean;
   data: {
     analyses: Analysis[];
+    totalCount?: number;
+    page?: number;
+    limit?: number;
   };
 }
 
@@ -33,21 +36,31 @@ const historySlice = api.injectEndpoints({
       }),
       transformResponse: (response: { data: HistoryMetricResponse }) => response.data,
     }),
-    getHistoryList: build.query<Analysis[], { page?: number; limit?: number }>({
+    getHistoryList: build.query<{ analyses: Analysis[]; totalCount: number; page: number; limit: number }, { page?: number; limit?: number }>({
       query: ({ page = 1, limit = 10 } = {}) => ({
         url: '/api/v1/history',
         method: 'GET',
         params: { page, limit },
       }),
-      transformResponse: (response: HistoryListResponse) => response.data.analyses,
+      transformResponse: (response: HistoryListResponse) => ({
+        analyses: response.data.analyses,
+        totalCount: response.data.totalCount ?? response.data.analyses.length,
+        page: response.data.page ?? 1,
+        limit: response.data.limit ?? 10,
+      }),
     }),
-    searchHistory: build.query<Analysis[], { q: string; score?: number; date?: number }>({
-      query: ({ q, score = 50, date = 30 }) => ({
+    searchHistory: build.query<{ analyses: Analysis[]; totalCount: number; page: number; limit: number }, { q: string; score?: number; date?: number; page?: number; limit?: number }>({
+      query: ({ q, score = 50, date = 30, page = 1, limit = 10 }) => ({
         url: '/api/v1/history/search',
         method: 'GET',
-        params: { q, score, date },
+        params: { q, score, date, page, limit },
       }),
-      transformResponse: (response: HistoryListResponse) => response.data.analyses,
+      transformResponse: (response: HistoryListResponse) => ({
+        analyses: response.data.analyses,
+        totalCount: response.data.totalCount ?? response.data.analyses.length,
+        page: response.data.page ?? 1,
+        limit: response.data.limit ?? 10,
+      }),
     }),
     getHistoryById: build.query<Analysis, string>({
       query: (id) => ({
