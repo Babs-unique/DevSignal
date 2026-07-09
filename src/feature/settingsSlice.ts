@@ -19,6 +19,15 @@ interface SettingsResponse {
   };
 }
 
+interface UploadAvatarResponse {
+  status: string;
+  success: boolean;
+  message: string;
+  data: {
+    avatarUrl: string;
+  };
+}
+
 const settingsSlice = api.injectEndpoints({
   endpoints: (build) => ({
     getSettings: build.query<UserProfile, void>({
@@ -43,6 +52,14 @@ const settingsSlice = api.injectEndpoints({
       }),
       invalidatesTags: ['Settings'],
     }),
+    uploadAvatar: build.mutation<UploadAvatarResponse, FormData>({
+      query: (body) => ({
+        url: '/api/v1/settings/avatar',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Settings'],
+    }),
   }),
 });
 
@@ -50,4 +67,5 @@ export const {
   useGetSettingsQuery,
   useUpdatePasswordMutation,
   useDeleteAccountMutation,
+  useUploadAvatarMutation,
 } = settingsSlice;

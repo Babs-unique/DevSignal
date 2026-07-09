@@ -9,7 +9,9 @@ import {
 import { SiGithub } from 'react-icons/si'
 import { useTheme } from '@/hooks/useTheme'
 import type { Theme } from '@/contexts/ThemeContext'
-import type { UserProfile } from '@/feature/settingsSlice'
+import { useUploadAvatarMutation, type UserProfile } from '@/feature/settingsSlice'
+import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 
 type ThemeColorOption = {
   name: string
@@ -26,6 +28,9 @@ type GeneralSettingsProps = {
 
 export const GeneralSettings = ({ user, isLoading, onDelete, isDeleting }: GeneralSettingsProps) => {
   const { theme, changeTheme } = useTheme()
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(user?.avatarUrl ?? null)
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
+  const [uploadAvatar] = useUploadAvatarMutation()
   const themesColors: ThemeColorOption[] = [
     {
       name: 'Blue',
@@ -46,6 +51,32 @@ export const GeneralSettings = ({ user, isLoading, onDelete, isDeleting }: Gener
 
   const [firstName = 'User', lastName = ''] = (user?.name ?? 'User').split(' ')
 
+  useEffect(() => {
+    setAvatarPreview(user?.avatarUrl ?? null)
+  }, [user?.avatarUrl])
+
+  const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append('avatar', file)
+
+    setIsUploadingAvatar(true)
+
+    try {
+      const response = await uploadAvatar(formData).unwrap()
+      setAvatarPreview(response.data.avatarUrl)
+      toast.success('Avatar updated successfully')
+    } catch (error) {
+      console.error('Avatar upload failed', error)
+      toast.error('Unable to upload avatar. Please try again.')
+    } finally {
+      setIsUploadingAvatar(false)
+      event.target.value = ''
+    }
+  }
+
   return (
     <div className="space-y-8">
       <section className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
@@ -58,12 +89,21 @@ export const GeneralSettings = ({ user, isLoading, onDelete, isDeleting }: Gener
 
         <div className="flex flex-col gap-7 md:flex-row md:items-start">
           <div className="flex w-28 shrink-0 flex-col items-center gap-3">
-            <div className="theme-soft-bg theme-border flex h-20 w-20 items-center justify-center rounded-full border text-2xl font-bold">
-              {isLoading ? '...' : (firstName[0] ?? 'U').toUpperCase()}
+            <div className="theme-soft-bg theme-border flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border text-2xl font-bold">
+              {isUploadingAvatar ? (
+                <span className="text-sm">Uploading...</span>
+              ) : avatarPreview ? (
+                <img src={avatarPreview} alt="User avatar" className="h-full w-full object-cover" />
+              ) : isLoading ? (
+                '...'
+              ) : (
+                (firstName[0] ?? 'U').toUpperCase()
+              )}
             </div>
-            <button type="button" className="theme-text text-xs font-medium">
-              Change Avatar
-            </button>
+            <input id="avatar-upload" type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+            <label htmlFor="avatar-upload" className="theme-text cursor-pointer text-xs font-medium">
+              {isUploadingAvatar ? 'Uploading...' : 'Change Avatar'}
+            </label>
           </div>
 
           <div className="grid flex-1 gap-5 sm:grid-cols-2">

@@ -61,14 +61,14 @@ export const NewAnalysisForm = ({
 
         <div
           {...getRootProps()}
-          className={`flex min-h-[232px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed px-6 text-center transition ${
+          className={`flex min-h-[232px] cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed px-6 text-center transition py-4 ${
             isDragActive
               ? 'border-indigo-400 bg-indigo-500/10'
               : 'border-white/15 bg-[#0c0c11] hover:border-indigo-400/60'
           }`}
         >
           <input {...getInputProps()} />
-          <span className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-indigo-400">
+          <span className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-indigo-400 ">
             <CloudUpload className="h-7 w-7" />
           </span>
           <p className="text-lg font-semibold text-white">
