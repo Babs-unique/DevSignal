@@ -71,7 +71,7 @@ export const NewAnalysisForm = ({
           <span className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-indigo-400 ">
             <CloudUpload className="h-7 w-7" />
           </span>
-          <p className="text-md font-semibold text-white text-wrap">
+          <p className="text-md font-semibold text-white text-wrap break-all">
             {file ? file.name : 'Drag & drop your resume here'}
           </p>
           <p className="mt-2 text-sm text-gray-400">
