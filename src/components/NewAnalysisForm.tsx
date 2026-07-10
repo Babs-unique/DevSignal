@@ -71,7 +71,7 @@ export const NewAnalysisForm = ({
           <span className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-indigo-400 ">
             <CloudUpload className="h-7 w-7" />
           </span>
-          <p className="text-lg font-semibold text-white">
+          <p className="text-md font-semibold text-white text-wrap">
             {file ? file.name : 'Drag & drop your resume here'}
           </p>
           <p className="mt-2 text-sm text-gray-400">
@@ -190,7 +190,7 @@ Requirements:
           Your data is processed securely and never shared.
         </p>
 
-        <div className="flex justify-end gap-3">
+        <div className="flex justify-end gap-3 flex-wrap">
           <button className="rounded-lg border border-white/10 px-6 py-3 text-sm font-medium text-gray-200 transition hover:bg-white/5">
             Cancel
           </button>
