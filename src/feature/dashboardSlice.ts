@@ -88,6 +88,7 @@ const dashboardSlice = api.injectEndpoints({
                 url: '/api/v1/dashboard',
                 method: 'GET',
             }),
+            providesTags: ['Dashboard'],
             transformResponse: (response: { data: DashboardResponse }) => response.data,
         }),
         getAnalysesById: build.query<Analysis, string>({
@@ -96,6 +97,7 @@ const dashboardSlice = api.injectEndpoints({
                 method: 'GET',
             }),
             transformResponse: (response: { data: { analysis: Analysis } }) => response.data.analysis,
+            providesTags: ['History'],
         }),
     }),
 });

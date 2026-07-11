@@ -48,6 +48,7 @@ const historySlice = api.injectEndpoints({
         page: response.data.page ?? 1,
         limit: response.data.limit ?? 10,
       }),
+      providesTags: ['History'],
     }),
     searchHistory: build.query<{ analyses: Analysis[]; totalCount: number; page: number; limit: number }, { q: string; score?: number; date?: number; page?: number; limit?: number }>({
       query: ({ q, score = 50, date = 30, page = 1, limit = 10 }) => ({
@@ -61,6 +62,7 @@ const historySlice = api.injectEndpoints({
         page: response.data.page ?? 1,
         limit: response.data.limit ?? 10,
       }),
+      providesTags: ['History'],
     }),
     getHistoryById: build.query<Analysis, string>({
       query: (id) => ({
@@ -68,6 +70,7 @@ const historySlice = api.injectEndpoints({
         method: 'GET',
       }),
       transformResponse: (response: HistoryDetailResponse) => response.data.analysis,
+      providesTags: ['History'],
     }),
     deleteHistoryById: build.mutation<void, string>({
       query: (id) => ({

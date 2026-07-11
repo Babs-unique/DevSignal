@@ -64,7 +64,7 @@ export const AnalysisResult = ({ data, onNewAnalysis }: AnalysesResult) => {
   const recommendedActions = (data?.recommendationActions ?? []).slice(0, 3)
 
   return (
-    <div className="min-h-screen bg-[#030306] text-white">
+    <div className="min-h-screen bg-[#030306] text-white w-full">
       <header className="flex flex-col gap-4 border-b border-white/10 px-4 py-5 sm:flex-row sm:items-center sm:justify-between md:px-8">
         <div>
           <h1 className="text-xl font-bold">Analysis Results</h1>
@@ -91,7 +91,7 @@ export const AnalysisResult = ({ data, onNewAnalysis }: AnalysesResult) => {
         </div>
       </header>
 
-      <main className="space-y-8 px-4 py-8 md:px-8">
+      <main className="space-y-4 py-4">
         <section className="grid gap-6 xl:grid-cols-[357px_1fr]">
           <div className="relative rounded-2xl border border-white/10 bg-[#09090c] px-6 py-7">
             <span className="absolute right-5 top-5 flex items-center gap-1.5 rounded-lg border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-400">

@@ -24,6 +24,7 @@ const authSlice = api.injectEndpoints({
                 method: "POST",
                 body: credentials,
             }),
+            invalidatesTags: ["Auth"],
         }),
         register: builder.mutation<{ accessToken: string }, { email: string; password: string; confirmPassword: string; token: string }>({
             query: (credentials) => ({
@@ -31,6 +32,7 @@ const authSlice = api.injectEndpoints({
                 method: "POST",
                 body: credentials,
             }),
+            invalidatesTags: ["Auth"],
         }),
         logout: builder.mutation<void, void>({
             query: () => ({
@@ -45,6 +47,7 @@ const authSlice = api.injectEndpoints({
                 method: "GET",
             }),
             transformResponse: (response: MeResponse) => response.data.user,
+            providesTags: ["Auth", "User"],
         }),
         deleteAccount: builder.mutation<void, void>({
             query: () => ({
@@ -59,6 +62,7 @@ const authSlice = api.injectEndpoints({
                 method: "POST",
                 body,
             }),
+            invalidatesTags: ["Auth"],
         }),
         resetPassword: builder.mutation<void, { token: string; newPassword: string; confirmPassword: string }>( {
             query: (body) => ({
@@ -66,6 +70,7 @@ const authSlice = api.injectEndpoints({
                 method: "POST",
                 body,
             }),
+            invalidatesTags: ["Auth"],
         })
     })
 });

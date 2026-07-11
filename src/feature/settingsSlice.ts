@@ -36,6 +36,7 @@ const settingsSlice = api.injectEndpoints({
         method: 'GET',
       }),
       transformResponse: (response: SettingsResponse) => response.data.user,
+      providesTags: ['Settings'],
     }),
     updatePassword: build.mutation<void, { currentPassword: string; newPassword: string }>({
       query: (body) => ({

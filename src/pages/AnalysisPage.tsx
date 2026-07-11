@@ -93,7 +93,6 @@ export const AnalysisPage = () => {
       </header>
       <main className='px-4 py-8 md:px-8'>
         {/* {isLoading && <AnalysisLoadingModal onCancel={handleCancelAnalysis} />} */}
-
         {!isLoading && error && !analysesData ? (
           <AnalysisError message={analysisErrorMessage} onRetry={handleSubmit} />
         ) : analysesData && !isLoading ? (

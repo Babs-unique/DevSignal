@@ -7,10 +7,11 @@ const authSlice = api.injectEndpoints({
                 url: '/api/v1/auth/github?json=true',
                 method: 'GET',
             }),
+            providesTags: ['GithubAuthUrl'],
         })
     })
 });
-   
+
 export const {
     useGetGithubAuthUrlQuery,
 } = authSlice;

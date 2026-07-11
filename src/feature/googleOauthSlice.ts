@@ -7,6 +7,7 @@ const authSlice = api.injectEndpoints({
                 url: '/api/v1/auth/google?json=true',
                 method: 'GET',
             }),
+            providesTags: ['GoogleAuthUrl'],
         })
     })
 });

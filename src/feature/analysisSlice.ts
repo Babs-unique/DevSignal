@@ -8,8 +8,9 @@ const analysesSlice = api.injectEndpoints({
             query: (data) => ({
                 url: '/api/v1/analyses',
                 method: 'POST',
-                body: data
+                body: data,
             }),
+            invalidatesTags: ['Analysis'],
         }),
     }),
 });
