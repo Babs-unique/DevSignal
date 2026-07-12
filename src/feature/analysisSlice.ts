@@ -10,7 +10,7 @@ const analysesSlice = api.injectEndpoints({
                 method: 'POST',
                 body: data,
             }),
-            invalidatesTags: ['Analysis'],
+            invalidatesTags: ['Analysis', 'History' ,'Dashboard'],
         }),
     }),
 });

@@ -5,6 +5,7 @@ import { logout } from '../feature/apiSlice.js';
 const baseQuery = fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_BASE_URL || '',
     credentials: 'include',
+    cache: 'no-store',
     prepareHeaders: (headers) => {
         return headers;
     }
