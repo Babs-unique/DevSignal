@@ -151,7 +151,7 @@ export const AnalysisResult = ({ data, onNewAnalysis }: AnalysesResult) => {
           </div>
         </section>
 
-        <section className="grid gap-6 xl:grid-cols-2">
+        <section className="sm:grid sm:gap-6 xl:grid-cols-2 flex flex-col gap-4">
           <div className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6">
             <div className="mb-6 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
@@ -205,7 +205,7 @@ export const AnalysisResult = ({ data, onNewAnalysis }: AnalysesResult) => {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-white/10 bg-[#09090c] px-6 py-7">
+        <section className="rounded-2xl border border-white/10 bg-[#09090c] px-4 py-5 sm:px-6 sm:py-7">
           <div className="mb-8 flex items-start gap-3">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-indigo-500/30 bg-indigo-500/10 text-indigo-400">
               <Map className="h-5 w-5" />
