@@ -34,7 +34,7 @@ export const Stats = ({ data, isLoading }: statsType) => {
     },
     {
       title: 'Format Score',
-      value: analysisSummary?.formatScore ?? 'Pending',
+      value: `${analysisSummary?.formatScore ??  0 }%`,
       valueClassName: 'text-yellow-400',
     },
     {
