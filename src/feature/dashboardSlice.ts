@@ -4,6 +4,9 @@ type AnalysisSummary = {
     overallAssessment: string;
     marketReadiness: string;
     hiringLikelihood: string;
+    experienceLevel: string;
+    formatScore: number;
+    impactWords: 'Needs Work' | 'Average' | 'Good' | 'Excellent';
 };
 
 type ExistingSkill = {

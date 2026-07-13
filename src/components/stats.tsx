@@ -28,18 +28,18 @@ export const Stats = ({ data, isLoading }: statsType) => {
       valueClassName: 'text-white',
     },
     {
-      title: 'Market Readiness',
-      value: analysisSummary?.marketReadiness ?? 'Pending',
+      title: 'Experience Level',
+      value: analysisSummary?.experienceLevel ?? 'Non-match',
       valueClassName: 'text-cyan-400',
     },
     {
-      title: 'Hiring Likelihood',
-      value: analysisSummary?.hiringLikelihood ?? 'Pending',
-      valueClassName: 'text-emerald-400',
+      title: 'Format Score',
+      value: analysisSummary?.formatScore ?? 'Pending',
+      valueClassName: 'text-yellow-400',
     },
     {
-      title: 'Overall Assessment',
-      value: analysisSummary?.overallAssessment ?? 'Pending',
+      title: 'Impact Words',
+      value: analysisSummary?.impactWords ?? 'Pending',
       valueClassName: 'text-yellow-400',
     },
   ]
