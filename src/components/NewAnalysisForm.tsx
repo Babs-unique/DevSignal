@@ -137,7 +137,7 @@ Requirements:
                 className="mb-3 block text-sm font-medium text-gray-300"
                 htmlFor="target-role"
               >
-                Target Role Title (Optional)
+                Target Role Title    
               </label>
               <input
                 id="target-role"
@@ -153,7 +153,7 @@ Requirements:
                 className="mb-3 block text-sm font-medium text-gray-300"
                 htmlFor="company-name"
               >
-                Company Name (Optional)
+                Company Name 
               </label>
               <input
                 id="company-name"
