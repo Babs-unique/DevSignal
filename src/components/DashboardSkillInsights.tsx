@@ -55,8 +55,8 @@ const getStepIconStyle = (category: string) => {
 export const DashboardSkillInsights = ({ data, isLoading }: SkillInsightsType) => {
   const radarData = (data?.latestMetric?.radarChartData ?? []).map((item) => ({
     skill: item.skill,
-    profile: item.userScore,
-    required: item.marketExpectedScore,
+    profile: item.userScore * 10,
+    required: item.marketExpectedScore * 10,
   }))
 
   const recommendations = data?.latestMetric?.recommendationActions ?? []
@@ -81,7 +81,7 @@ export const DashboardSkillInsights = ({ data, isLoading }: SkillInsightsType) =
           </div>
         </div>
 
-        <div className="h-[300px] w-full">
+        <div className="h-[90%] w-full m-auto">
           {isLoading ? (
             <div className="flex h-full items-center justify-center text-sm text-gray-400">
               Loading skill insights...

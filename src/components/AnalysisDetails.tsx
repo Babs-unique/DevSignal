@@ -17,33 +17,55 @@ import {
 } from 'recharts'
 import { SiReact } from 'react-icons/si'
 import { Link } from 'react-router-dom'
-
-const alignmentData = [
-  { skill: 'React', profile: 90, required: 88 },
-  { skill: 'TypeScript', profile: 83, required: 78 },
-  { skill: 'CSS/Tailwind', profile: 88, required: 70 },
-  { skill: 'Node.js', profile: 60, required: 66 },
-  { skill: 'GraphQL', profile: 52, required: 76 },
-]
-
-const missingSkills = [
-  {
-    name: 'GraphQL',
-    tag: 'Required',
-    description: 'Job requires 2+ years of production GraphQL experience.',
-    className: 'border-red-500/30 bg-red-500/10 text-red-400',
-    tagClassName: 'border-red-500/30 bg-red-500/10 text-red-400',
-  },
-  {
-    name: 'WebRTC',
-    tag: 'Nice To Have',
-    description: "Mentioned in 'Bonus Qualifications' for real-time features.",
-    className: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-400',
-    tagClassName: 'border-yellow-500/30 bg-yellow-500/10 text-yellow-400',
-  },
-]
+import { useGetAnalysesByIdQuery } from '@/feature/dashboardSlice'
+import { useParams } from 'react-router-dom'
 
 export const AnalysisDetails = () => {
+  const { id } = useParams()
+  const { data : analysisDetails, isLoading } = useGetAnalysesByIdQuery(id)
+
+  console.log(analysisDetails)
+  if(isLoading){
+        return (<div className="flex items-center justify-center min-h-screen bg-[#030306]">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+        </div> )
+  }
+
+  const radarData = analysisDetails?.radarChartData.map((skill) => ({
+    skill: skill.skill,
+    userScore: skill.userScore * 10,
+    marketExpectedScore: skill.marketExpectedScore * 10,
+  }))
+
+  const missingSkills = analysisDetails?.missingSkills.map((skill) => ({
+    name: skill.skill,
+    tag: skill.importance,
+    description: skill.reason,
+    className:
+      skill.importance === 'Critical'
+        ? 'border-red-500/30 bg-red-500/10 text-red-400'
+        : skill.importance === 'Important'
+        ? 'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'
+        : skill.importance === 'Recommended'
+        ? 'border-blue-500/30 bg-blue-500/10 text-blue-400'
+        : 'border-gray-500/30 bg-gray-500/10 text-gray-400',
+    tagClassName:
+      skill.importance === 'Critical'
+        ? 'border-red-500/30 bg-red-500/10 text-red-400'
+        : skill.importance === 'Important'
+        ? 'border-yellow-500/30 bg-yellow-500/10 text-yellow-400'
+        : skill.importance === 'Recommended' 
+        ? 'border-blue-500/30 bg-blue-500/10 text-blue-400'
+        : 'border-gray-500/30 bg-gray-500/10 text-gray-400',
+  }))
+
+
+  const matchScoreGrade = (matchScore: number) => {
+    if (matchScore >= 80) return 'Strong Match'
+    if (matchScore >= 60) return 'Promising'
+    return 'Needs Work'
+  }
+
   return (
     <div className="min-h-screen bg-[#030306] text-white">
       <header className="flex flex-col gap-4 border-b border-white/10 px-4 py-5 sm:flex-row sm:items-center sm:justify-between md:px-8">
@@ -57,7 +79,7 @@ export const AnalysisDetails = () => {
           <div>
             <h1 className="text-xl font-bold">Analysis Detail</h1>
             <p className="mt-1 text-sm text-gray-400">
-              Reviewing match for Senior Frontend Engineer
+              Reviewing match for {analysisDetails?.roleTitle ?? 'Role Match'}
             </p>
           </div>
         </div>
@@ -82,10 +104,10 @@ export const AnalysisDetails = () => {
             </span>
             <div>
               <h2 className="text-xl font-bold text-white">
-                Senior Frontend Engineer
+                {analysisDetails?.roleTitle ?? 'Role Match'}
               </h2>
               <p className="mt-2 font-mono text-sm text-gray-500">
-                TechCorp Inc. • Oct 24, 2023
+                {analysisDetails?.companyName ?? 'Company Name Not Provided'}
               </p>
             </div>
           </div>
@@ -93,7 +115,7 @@ export const AnalysisDetails = () => {
           <div className="sm:text-right">
             <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2 font-mono text-sm text-gray-200">
               <FileText className="h-4 w-4 text-red-400" />
-              alex_dev_resume_v4.pdf
+              {analysisDetails?.resumeFileName ?? 'Resume.pdf'}
             </div>
             <p className="mt-3 font-mono text-xs text-gray-500">
               Parsed via DevSignal Engine v2.1
@@ -105,21 +127,33 @@ export const AnalysisDetails = () => {
           <div className="rounded-2xl border border-white/10 bg-[#09110f] px-6 py-7 shadow-[0_0_70px_rgba(16,185,129,0.06)]">
             <p className="text-sm text-gray-400">Overall Match Score</p>
 
-            <div className="mx-auto mt-7 flex h-48 w-48 items-center justify-center rounded-full shadow-[0_0_42px_rgba(16,185,129,0.18)]">
+            <div className={`mx-auto mt-7 flex h-48 w-48 items-center justify-center rounded-full
+            ${matchScoreGrade(analysisDetails?.matchScore ?? 0) === 'Strong Match' ? 'shadow-[0_0_42px_rgba(16,185,129,0.18)]' : matchScoreGrade(analysisDetails?.matchScore ?? 0) === 'Promising' ? 'shadow-[0_0_42px_rgba(250,204,21,0.18)]' : 'shadow-[0_0_42px_rgba(239,68,68,0.18)]'}
+              `}>
               <div
                 className="relative h-48 w-48 rounded-full"
                 style={{
                   background:
-                    'conic-gradient(#10b981 0deg 295deg, #25272b 295deg 360deg)',
+                    matchScoreGrade(analysisDetails?.matchScore ?? 0) === 'Strong Match'
+                    ? `conic-gradient(#10b981 0deg ${(analysisDetails?.matchScore ?? 0) * 3.6}deg, #25272b 295deg 360deg)`
+                    : matchScoreGrade(analysisDetails?.matchScore ?? 0) === 'Promising'
+                    ? `conic-gradient(
+                    #facc15 0deg 295deg, #25272b ${(analysisDetails?.matchScore ?? 0) * 3.6}deg 360deg
+                    )`
+                    : `conic-gradient(#ef4444 0deg ${(analysisDetails?.matchScore ?? 0) * 3.6}deg, #25272b 0deg 360deg)`
+                    ,
                 }}
               >
                 <div className="absolute inset-4 rounded-full bg-[#09110f]" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <p className="text-5xl font-bold leading-none text-white">
-                    82<span className="text-2xl text-gray-500">%</span>
+                    {analysisDetails?.matchScore ?? 0}
+                    <span className="text-2xl text-gray-500">%</span>
                   </p>
-                  <span className="mt-3 rounded border border-emerald-500/35 bg-emerald-500/10 px-3 py-1 font-mono text-xs text-emerald-400">
-                    Strong Match
+                  <span className={`mt-3 rounded border px-3 py-1 font-mono text-xs 
+                  ${matchScoreGrade(analysisDetails?.matchScore ?? 0) === 'Strong Match' ? 'text-emerald-400 border-emerald-500/35 bg-emerald-500/10' : matchScoreGrade(analysisDetails?.matchScore ?? 0) === 'Promising' ? 'text-yellow-400 border-yellow-500/35 bg-yellow-500/10' : 'text-red-400 border-red-500/35 bg-red-500/10'}`}
+                >
+                    {matchScoreGrade(analysisDetails?.matchScore ?? 0)}
                   </span>
                 </div>
               </div>
@@ -132,7 +166,9 @@ export const AnalysisDetails = () => {
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-gray-500">
                   Required Skills
                 </p>
-                <p className="mt-2 text-lg font-bold">14 / 16</p>
+                <p className="mt-2 text-lg font-bold">
+                  {(analysisDetails?.missingSkills.length ?? 0)} / {(analysisDetails?.existingSkills.length ?? 0) + (analysisDetails?.missingSkills.length ?? 0)}
+                </p>
               </div>
               <div>
                 <p className="font-mono text-xs uppercase tracking-[0.18em] text-gray-500">
@@ -162,7 +198,7 @@ export const AnalysisDetails = () => {
 
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={alignmentData} outerRadius="78%">
+                <RadarChart data={radarData} outerRadius="78%">
                   <PolarGrid stroke="#27272f" radialLines />
                   <PolarAngleAxis
                     dataKey="skill"
@@ -175,7 +211,7 @@ export const AnalysisDetails = () => {
                     axisLine={false}
                   />
                   <Radar
-                    dataKey="required"
+                    dataKey="marketExpectedScore"
                     stroke="#3f3f46"
                     fill="#3f3f46"
                     fillOpacity={0.05}
@@ -183,7 +219,7 @@ export const AnalysisDetails = () => {
                     strokeWidth={2}
                   />
                   <Radar
-                    dataKey="profile"
+                    dataKey="userScore"
                     stroke="#6366f1"
                     fill="#6366f1"
                     fillOpacity={0.18}
@@ -205,12 +241,12 @@ export const AnalysisDetails = () => {
                 <h2 className="text-lg font-semibold">Missing Skills</h2>
               </div>
               <span className="rounded border border-white/10 px-3 py-1 font-mono text-xs text-gray-400">
-                2 Critical Gaps
+                {analysisDetails?.missingSkills.length} Critical Gaps
               </span>
             </div>
 
             <div className="space-y-4">
-              {missingSkills.map((skill) => (
+              {missingSkills?.map((skill) => (
                 <div
                   key={skill.name}
                   className={`rounded-lg border px-4 py-4 ${skill.className}`}
@@ -239,33 +275,33 @@ export const AnalysisDetails = () => {
               <h2 className="text-lg font-semibold">Action Plan</h2>
             </div>
 
-            <div className="relative mx-auto h-[295px] max-w-[520px]">
-              <div className="absolute right-0 top-5 w-[218px] rounded-xl border border-white/10 bg-[#1a1a1f] p-4 shadow-xl">
-                <h3 className="text-sm font-semibold">
-                  Highlight REST API scaling
-                </h3>
-                <p className="mt-2 text-xs leading-5 text-gray-400">
-                  To offset the GraphQL gap, emphasize your experience scaling
-                  REST APIs to 10k+ RPM in your summary.
-                </p>
-              </div>
-
-              <div className="absolute bottom-0 left-[64px] w-[218px] rounded-xl border border-white/10 bg-[#111116] p-4">
-                <h3 className="text-sm font-semibold">
-                  Restructure Experience Section
-                </h3>
-                <p className="mt-2 text-xs leading-5 text-gray-400">
-                  Move the 'Senior Frontend' role at StartupX to the top to align
-                  with this JD's seniority expectations.
-                </p>
-              </div>
-
-              <span className="absolute right-[-32px] top-[85px] flex h-8 w-8 items-center justify-center rounded-full border border-indigo-500 bg-[#111116] text-indigo-300">
-                <Check className="h-4 w-4" />
-              </span>
-              <span className="absolute bottom-[54px] left-8 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-[#111116] font-mono text-xs text-gray-500">
-                2
-              </span>
+            <div className="space-y-4 max-h-[295px]">
+              {analysisDetails?.recommendationActions && analysisDetails.recommendationActions.length > 0 ? (
+                analysisDetails.recommendationActions.map((action) => (
+                  <div
+                    key={action.title}
+                    className="rounded-xl border border-white/10 bg-[#111116] p-4"
+                  >
+                    <h3 className="text-sm font-semibold">{action.title}</h3>
+                    <p className="mt-2 text-xs leading-5 text-gray-400">
+                      {action.description}
+                    </p>
+                    <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
+                      <span className="font-bold text-indigo-400">{action.category}</span>
+                      <span className={`font-bold
+                      ${
+                          ['Easy', 'Beginner'].includes(action.difficulty) ? 'text-green-400' :
+                          ['Intermediate', 'Medium'].includes(action.difficulty) ? 'text-yellow-400' :
+                          ['Hard', 'Advanced'].includes(action.difficulty) ? 'text-red-400' :
+                          'text-gray-400'
+                          }
+                        `}>{action.difficulty}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-gray-400">No action plan available.</p>
+              )}
             </div>
           </div>
         </section>
