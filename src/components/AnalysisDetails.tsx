@@ -16,13 +16,23 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { SiReact } from 'react-icons/si'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { useGetAnalysesByIdQuery } from '@/feature/dashboardSlice'
+import { useDeleteHistoryByIdMutation, useDuplicateAnalysesByIdMutation} from '@/feature/historySlice'
 import { useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { DeleteAnalysisModal } from './DeleteAnalysesModal'
+
 
 export const AnalysisDetails = () => {
-  const { id } = useParams()
+  const { id } = useParams<{ id: string | undefined }>()
+  const [ showDeleteModal , setShowDeleteModal ] = useState(false)
   const { data : analysisDetails, isLoading } = useGetAnalysesByIdQuery(id)
+  const [ duplicateAnalysis  , {isLoading: isDuplicating}] = useDuplicateAnalysesByIdMutation()
+  const [ deleteAnalysis , {isLoading: isDeleting}] = useDeleteHistoryByIdMutation()
+
+  const navigate = useNavigate();
 
   console.log(analysisDetails)
   if(isLoading){
@@ -31,6 +41,31 @@ export const AnalysisDetails = () => {
         </div> )
   }
 
+  const handleDelete = async () => {
+    if (!id) return
+    try {
+      await deleteAnalysis(id).unwrap()
+      toast.success('Analysis deleted successfully')
+      navigate('/dashboard/history')
+      setShowDeleteModal(false)
+    } catch (error) {
+      toast.error('Failed to delete analysis')
+      console.error(error)
+    }
+  }
+  const handleDuplicate = async () => {
+    if (!id) return
+    try {
+      const result = await duplicateAnalysis(id).unwrap()
+      toast.success('Analysis duplicated successfully')
+      if (result?._id) {
+        navigate(`/dashboard/analysis/${result._id}`)
+      }
+    } catch (error) {
+      toast.error('Failed to duplicate analysis')
+      console.error(error)
+    }
+  }
   const radarData = analysisDetails?.radarChartData.map((skill) => ({
     skill: skill.skill,
     userScore: skill.userScore * 10,
@@ -85,13 +120,19 @@ export const AnalysisDetails = () => {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <button className="flex items-center gap-2 rounded-lg border border-red-500/40 px-4 py-2.5 text-sm font-medium text-red-400 transition hover:bg-red-500/10">
+          <button className="flex items-center gap-2 rounded-lg border border-red-500/40 px-4 py-2.5 text-sm font-medium text-red-400 transition hover:bg-red-500/10"
+          onClick={() => setShowDeleteModal(true)}
+          disabled={isDeleting}
+          >
             <Trash2 className="h-4 w-4" />
-            Delete
+            {isDeleting ? 'Delete...' : 'Delete'} 
           </button>
-          <button className="flex items-center gap-2 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(124,58,237,0.35)] transition hover:from-indigo-400 hover:to-purple-500">
-            <Copy className="h-4 w-4" />
-            Duplicate Analysis
+          <button className="flex items-center gap-2 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(124,58,237,0.35)] transition hover:from-indigo-400 hover:to-purple-500"
+          onClick={handleDuplicate}
+          disabled={isDuplicating}
+          >
+            <Copy className="h-4 w-4"/>
+            {isDuplicating ? 'Duplicating...' : 'Duplicate Analysis'}
           </button>
         </div>
       </header>
@@ -304,6 +345,14 @@ export const AnalysisDetails = () => {
               )}
             </div>
           </div>
+          {showDeleteModal && (
+              <DeleteAnalysisModal
+                roleTitle={analysisDetails?.roleTitle}
+                isDeleting={isDeleting}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={handleDelete}
+              />
+            )}
         </section>
       </main>
     </div>

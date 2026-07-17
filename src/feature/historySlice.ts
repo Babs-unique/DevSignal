@@ -79,7 +79,14 @@ const historySlice = api.injectEndpoints({
       }),
       invalidatesTags: ['History'],
     }),
+    duplicateAnalysesById: build.mutation<Analysis, string>({
+      query: (id) => ({
+        url: `/api/v1/history/${id}/duplicate`,
+        method: 'POST',
+    }),
+    invalidatesTags: ['History'],
   }),
+  })
 });
 
 export const {
@@ -88,4 +95,5 @@ export const {
   useSearchHistoryQuery,
   useGetHistoryByIdQuery,
   useDeleteHistoryByIdMutation,
+  useDuplicateAnalysesByIdMutation,
 } = historySlice;

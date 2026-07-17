@@ -46,13 +46,6 @@ const settingsSlice = api.injectEndpoints({
       }),
       invalidatesTags: ['Settings'],
     }),
-    deleteAccount: build.mutation<void, void>({
-      query: () => ({
-        url: '/api/v1/settings',
-        method: 'DELETE',
-      }),
-      invalidatesTags: ['Settings'],
-    }),
     uploadAvatar: build.mutation<UploadAvatarResponse, FormData>({
       query: (body) => ({
         url: '/api/v1/settings/avatar',
@@ -67,6 +60,5 @@ const settingsSlice = api.injectEndpoints({
 export const {
   useGetSettingsQuery,
   useUpdatePasswordMutation,
-  useDeleteAccountMutation,
   useUploadAvatarMutation,
 } = settingsSlice;
