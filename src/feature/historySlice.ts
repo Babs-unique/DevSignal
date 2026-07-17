@@ -83,10 +83,10 @@ const historySlice = api.injectEndpoints({
       query: (id) => ({
         url: `/api/v1/history/${id}/duplicate`,
         method: 'POST',
-    }),
-    invalidatesTags: ['History'],
-  }),
-  })
+      }),
+      invalidatesTags: ['History'],
+    }), 
+  }), 
 });
 
 export const {
