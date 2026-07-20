@@ -1,6 +1,5 @@
 import {
   ArrowLeft,
-  Check,
   Copy,
   FileText,
   Lightbulb,
@@ -23,12 +22,13 @@ import { useDeleteHistoryByIdMutation, useDuplicateAnalysesByIdMutation} from '@
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { DeleteAnalysisModal } from './DeleteAnalysesModal'
+import { skipToken } from '@reduxjs/toolkit/query/react'
 
 
 export const AnalysisDetails = () => {
-  const { id } = useParams<{ id: string | undefined }>()
+  const { id } = useParams<{ id: string }>()
   const [ showDeleteModal , setShowDeleteModal ] = useState(false)
-  const { data : analysisDetails, isLoading } = useGetAnalysesByIdQuery(id)
+  const { data : analysisDetails, isLoading } = useGetAnalysesByIdQuery(id ?? skipToken)
   const [ duplicateAnalysis  , {isLoading: isDuplicating}] = useDuplicateAnalysesByIdMutation()
   const [ deleteAnalysis , {isLoading: isDeleting}] = useDeleteHistoryByIdMutation()
 
