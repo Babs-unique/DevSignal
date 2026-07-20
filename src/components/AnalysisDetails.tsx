@@ -154,7 +154,7 @@ export const AnalysisDetails = () => {
           </div>
 
           <div className="sm:text-right">
-            <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2 font-mono text-sm text-gray-200">
+            <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2 font-mono text-sm text-gray-200 text-wrap break-all">
               <FileText className="h-4 w-4 text-red-400" />
               {analysisDetails?.resumeFileName ?? 'Resume.pdf'}
             </div>
@@ -316,7 +316,7 @@ export const AnalysisDetails = () => {
               <h2 className="text-lg font-semibold">Action Plan</h2>
             </div>
 
-            <div className="space-y-4 max-h-[295px]">
+            <div className="space-y-4 max-h-[295px] overflow-y-auto">
               {analysisDetails?.recommendationActions && analysisDetails.recommendationActions.length > 0 ? (
                 analysisDetails.recommendationActions.map((action) => (
                   <div
