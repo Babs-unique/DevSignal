@@ -139,7 +139,7 @@ export const AnalysisDetails = () => {
 
       <main className="space-y-6 px-4 py-8 md:px-8">
         <section className="flex flex-col gap-5 rounded-2xl border border-white/10 bg-[#09090c] px-6 py-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 px-2">
             <span className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] text-sky-400">
               <SiReact className="h-6 w-6" />
             </span>
