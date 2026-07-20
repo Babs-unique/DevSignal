@@ -53,6 +53,7 @@ const getStepIconStyle = (category: string) => {
 }
 
 export const DashboardSkillInsights = ({ data, isLoading }: SkillInsightsType) => {
+
   const radarData = (data?.latestMetric?.radarChartData ?? []).map((item) => ({
     skill: item.skill,
     profile: item.userScore * 10,
