@@ -316,7 +316,7 @@ export const AnalysisDetails = () => {
               <h2 className="text-lg font-semibold">Action Plan</h2>
             </div>
 
-            <div className="space-y-4 max-h-[295px] overflow-y-auto">
+            <div className="space-y-4 max-h-[295px]">
               {analysisDetails?.recommendationActions && analysisDetails.recommendationActions.length > 0 ? (
                 analysisDetails.recommendationActions.map((action) => (
                   <div
