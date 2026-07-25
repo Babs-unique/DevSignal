@@ -33,7 +33,7 @@ export const SignupPage = () => {
           }
           toast.success('Register successful')
           setTimeout(() => {
-              navigate("/login", { replace: true });
+              navigate("/dashboard", { replace: true });
           }, 2000);
       }catch(e){
           console.error('Error creating account:', e);
